@@ -5,5 +5,7 @@ echo $FILE
 INPUT=$(cat $FILE)
 echo $INPUT
 
-foreach file ($INPUT)
+for file in $INPUT
+do
 echo $file
+done
