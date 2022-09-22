@@ -3,8 +3,8 @@
 #read -p "Enter path for text file which lists maps to be copied: " FILE
 #read -p "Enter path to folder you wish to copy these files to: " FolderName
 
-FILE=SubtomogramAve.txt
-FolderName=SubtomogramAverages
+FILE=tomograms.txt
+FolderName=Tomograms
 
 INPUT=$(cat $FILE)
 
