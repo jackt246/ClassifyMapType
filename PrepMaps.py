@@ -163,5 +163,5 @@ def PrepMapsProject(DirectoryName, OutputDir):
 DirectoryName = ('SubtomogramAverages')
 OutputDir = ('Classes/SubtomogramAverage')
 
-PrepMapsProject(DirectoryName, OutputDir)
+PrepMapsResize(DirectoryName, OutputDir)
       
