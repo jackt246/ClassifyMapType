@@ -84,20 +84,20 @@ def SaveAndResize(array, axis, extension, Directory):
     print(array.shape[2])
     print(axis)
     if axis in ['Z', 'z']:
-        print('doing z')
+        #print('doing z')
         #For each only save the central 80% of the data, this will hopefully remove any masked regions and horrible boundary crap
         for plane in range(int((length[2] / 10)), int(((length[2] / 100) * 90))):
             CurrentPlane = array[:,:,plane]
             CurrentPlaneResize = np.resize(CurrentPlane, (100,100))
             plt.imsave('{}/{}_{}.png'.format(Directory, plane, extension), CurrentPlaneResize, cmap='Greys')
     elif axis in ['Y', 'y']:
-        print('doing y')
+        #print('doing y')
         for plane in range(int((length[0] / 10)), int(((length[0] / 100) * 90))):
                 CurrentPlane = array[plane,:,:]
                 CurrentPlaneResize = np.resize(CurrentPlane, (100, 100))
                 plt.imsave('{}/{}_{}.png'.format(Directory, plane, extension), CurrentPlaneResize, cmap='Greys')
     elif axis in ['X', 'x']:
-        print('doing x')
+        #print('doing x')
         for plane in range(int((length[1] / 10)), int(((length[1] / 100) * 90))):
             CurrentPlane = array[:,plane,:]
             CurrentPlaneResize = np.resize(CurrentPlane, (100, 100))
@@ -160,8 +160,8 @@ def PrepMapsProject(DirectoryName, OutputDir):
             map = OpenMrc('{}/{}'.format(DirectoryName, file))
             SaveAndProject(map, file, OutputDir)
 
-DirectoryName = ('SubtomogramAverages')
-OutputDir = ('Classes/SubtomogramAverage')
+DirectoryName = ('Tomograms')
+OutputDir = ('Classes/Tomograms')
 
 PrepMapsResize(DirectoryName, OutputDir)
       
