@@ -34,7 +34,7 @@ img_width = 100
 #Generate training dataset
 train_ds = tf.keras.utils.image_dataset_from_directory(
   Directory,
-  validation_split=0.6,
+  validation_split=0.8,
   subset="training",
   seed=123,
   image_size=(img_height, img_width),
@@ -43,7 +43,7 @@ train_ds = tf.keras.utils.image_dataset_from_directory(
 #Generate val dataset
 val_ds = tf.keras.utils.image_dataset_from_directory(
   Directory,
-  validation_split=0.4,
+  validation_split=0.2,
   subset="validation",
   seed=123,
   image_size=(img_height, img_width),
@@ -125,7 +125,7 @@ plt.plot(epochs_range, loss, label='Training Loss')
 plt.plot(epochs_range, val_loss, label='Validation Loss')
 plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
-plt.show()
+plt.savefig('Training_summary.png')
 
 # Convert the model.
 converter = tf.lite.TFLiteConverter.from_keras_model(model)
