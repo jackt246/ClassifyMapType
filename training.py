@@ -22,7 +22,7 @@ from tensorflow.keras.models import Sequential
 #Data directories
 
 Directory = 'Classes/'
-SubTomo = '{}/SubTomograms'.format(Directory)
+SubTomo = '{}/SubtomogramAverage'.format(Directory)
 Tomograms = '{}/Tomograms'.format(Directory)
 
 
