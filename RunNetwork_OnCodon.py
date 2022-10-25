@@ -88,6 +88,6 @@ for file in FilesList:
     data = {'Map': file, 'Expected Type': Folder, 'Predicted Type': class_names[np.argmax(score_lite)], 'Prediction score %': 100 * np.max(score_lite)}
     Results.update(data)
 
-DataOut = pd.Dataframe(Results)
+DataOut = pd.DataFrame(Results)
 DataOut.to_csv('results_{}.csv'.format(Folder))
 
