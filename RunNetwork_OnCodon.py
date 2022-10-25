@@ -43,7 +43,7 @@ def Projector(array, axis):
     arraySum = np.sum(array, axis=axis)
     return arraySum
 
-Folder = 'SubutomgramAverages'
+Folder = 'SubtomgramAverages'
 FilesList = os.listdir(Folder)
 
 Results = {}
