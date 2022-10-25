@@ -43,7 +43,7 @@ def Projector(array, axis):
     arraySum = np.sum(array, axis=axis)
     return arraySum
 
-Folder = 'SubtomogramAverages'
+Folder = 'Tomograms'
 FilesList = os.listdir(Folder)
 
 Results = {}
@@ -58,8 +58,8 @@ for file in FilesList:
     Z = MapEdit.CentSliceZ()
 
 
-    plt.imsave('ImageToClassify.png', Z, cmap='Greys')
-    ImageLoc = 'ImageToClassify.png'
+    plt.imsave('ImageToClassify_tomo.png', Z, cmap='Greys')
+    ImageLoc = 'ImageToClassify_tomo.png'
 
     #Set up information on the data
     img_height = 100
@@ -89,5 +89,5 @@ for file in FilesList:
     Results.update(data)
 
 DataOut = pd.DataFrame(Results)
-DataOut.to_csv('results_{}_subtomo.csv'.format(Folder))
+DataOut.to_csv('results_{}_tomo.csv'.format(Folder))
 
