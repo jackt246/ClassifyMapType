@@ -43,7 +43,7 @@ def Projector(array, axis):
     arraySum = np.sum(array, axis=axis)
     return arraySum
 
-Folder = 'Tomograms'
+Folder = 'SubtomogramAverages'
 FilesList = os.listdir(Folder)
 
 Results = {}
@@ -89,5 +89,5 @@ for file in FilesList:
     Results.update(data)
 
 DataOut = pd.DataFrame(Results)
-DataOut.to_csv('results_{}.csv'.format(Folder))
+DataOut.to_csv('results_{}_subtomo.csv'.format(Folder))
 
