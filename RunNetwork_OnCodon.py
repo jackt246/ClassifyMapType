@@ -43,10 +43,10 @@ def Projector(array, axis):
     arraySum = np.sum(array, axis=axis)
     return arraySum
 
-Folder = 'SubtomogramAverages'
+Folder = 'Tomograms'
 FilesList = os.listdir(Folder)
 
-Results = {}
+Results = pd.DataFrame(columns=['Map', 'Expected Type', 'Predicted Type', 'Prediction score %'])
 
 #Open and pre-process map
 
@@ -58,8 +58,8 @@ for file in FilesList:
     Z = MapEdit.CentSliceZ()
 
 
-    plt.imsave('ImageToClassify_subtomo.png', Z, cmap='Greys')
-    ImageLoc = 'ImageToClassify_subtomo.png'
+    plt.imsave('ImageToClassify_tomo.png', Z, cmap='Greys')
+    ImageLoc = 'ImageToClassify_tomo.png'
 
     #Set up information on the data
     img_height = 100
@@ -85,9 +85,10 @@ for file in FilesList:
         .format(class_names[np.argmax(score_lite)], 100 * np.max(score_lite))
     )
 
-    data = {'Map': file, 'Expected Type': Folder, 'Predicted Type': class_names[np.argmax(score_lite)], 'Prediction score %': 100 * np.max(score_lite)}
-    Results.update(data)
+    data = pd.DataFrame({'Map': file, 'Expected Type': Folder, 'Predicted Type': class_names[np.argmax(score_lite)], 'Prediction score %': 100 * np.max(score_lite)}, index=[0])
+    print(data)
+    Results = Results.append(data, ignore_index=True)
 
-DataOut = pd.DataFrame(Results)
-DataOut.to_csv('results_{}_subtomo.csv'.format(Folder))
+print(Results)
+Results.to_csv('results_{}_tomo.csv'.format(Folder))
 
