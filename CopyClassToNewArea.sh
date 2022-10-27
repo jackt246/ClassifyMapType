@@ -12,6 +12,6 @@ INPUT=$(cat $FILE)
 
 for file in $INPUT
 do
-echo $OldFolder/$file* $NewFolder
-mv $OldFolder/$file* $NewFolder
+echo $OldFolder/*$file* $NewFolder
+mv $OldFolder/*$file* $NewFolder
 done
