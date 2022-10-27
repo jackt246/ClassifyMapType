@@ -4,8 +4,8 @@
 #read -p "Enter path to folder you wish to copy these files to: " FolderName
 
 FILE=Analysis/IPETList.txt
-OldFolder=Classes/Tomograms
-NewFolder=Classes/IPET
+OldFolder=/hps/nobackup/gerard/emdb/ClassifyMapType/Classes/Tomograms
+NewFolder=/hps/nobackup/gerard/emdb/ClassifyMapType/Classes/IPET
 
 INPUT=$(cat $FILE)
 
