@@ -97,13 +97,17 @@ model = Sequential([
   layers.Rescaling(1./255),
   layers.Conv2D(16, 3, padding='same', activation='relu'),
   layers.MaxPooling2D(),
-  layers.Dropout(0.15),
+  layers.Dropout(0.2),
   layers.Conv2D(32, 3, padding='same', activation='relu'),
   layers.MaxPooling2D(),
   layers.Conv2D(64, 3, padding='same', activation='relu'),
   layers.MaxPooling2D(),
+  layers.Conv2D(128, 3, padding='same', activation='relu'),
+  layers.MaxPooling2D(),
+  layers.Conv2D(256, 3, padding='same', activation='relu'),
+  layers.MaxPooling2D(),
   layers.Flatten(),
-  layers.Dense(128, activation='relu'),
+  layers.Dense(512, activation='relu'),
   layers.Dense(num_classes, name="outputs")
 ])
 
@@ -113,7 +117,7 @@ model.compile(optimizer='adam',
 
 model.summary()
 
-epochs=100
+epochs=10
 history = model.fit(
   train_ds,
   validation_data=val_ds,
