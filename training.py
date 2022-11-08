@@ -36,7 +36,7 @@ img_width = 100
 #Generate training dataset
 train_ds = tf.keras.utils.image_dataset_from_directory(
   Directory,
-  validation_split=0.15,
+  validation_split=0.7,
   subset="training",
   seed=123,
   image_size=(img_height, img_width),
@@ -45,7 +45,7 @@ train_ds = tf.keras.utils.image_dataset_from_directory(
 #Generate val dataset
 val_ds = tf.keras.utils.image_dataset_from_directory(
   Directory,
-  validation_split=0.05,
+  validation_split=0.3,
   subset="validation",
   seed=123,
   image_size=(img_height, img_width),
@@ -81,23 +81,22 @@ print(np.min(first_image), np.max(first_image))
 
 num_classes = len(class_names)
 
-data_augmentation = keras.Sequential(
-  [
-    layers.RandomFlip("horizontal",
-                      input_shape=(img_height,
-                                  img_width,
-                                  3)),
-    layers.RandomRotation(0.1),
-    layers.RandomZoom(0.1),
-  ]
-)
+#data_augmentation = keras.Sequential(
+#  [
+#    layers.RandomFlip("horizontal",
+#                      input_shape=(img_height,
+#                                  img_width,
+#                                  3)),
+#    layers.RandomRotation(0.1),
+#    layers.RandomZoom(0.1),
+#  ]
+#)
 
 model = Sequential([
-  data_augmentation,
+  #data_augmentation,
   layers.Rescaling(1./255),
   layers.Conv2D(16, 3, padding='same', activation='relu'),
   layers.MaxPooling2D(),
-  layers.Dropout(0.2),
   layers.Conv2D(32, 3, padding='same', activation='relu'),
   layers.MaxPooling2D(),
   layers.Conv2D(64, 3, padding='same', activation='relu'),
