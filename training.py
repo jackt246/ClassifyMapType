@@ -36,7 +36,7 @@ img_width = 100
 #Generate training dataset
 train_ds = tf.keras.utils.image_dataset_from_directory(
   Directory,
-  validation_split=0.7,
+  validation_split=0.85,
   subset="training",
   seed=123,
   image_size=(img_height, img_width),
@@ -45,7 +45,7 @@ train_ds = tf.keras.utils.image_dataset_from_directory(
 #Generate val dataset
 val_ds = tf.keras.utils.image_dataset_from_directory(
   Directory,
-  validation_split=0.3,
+  validation_split=0.15,
   subset="validation",
   seed=123,
   image_size=(img_height, img_width),
@@ -105,8 +105,10 @@ model = Sequential([
   layers.MaxPooling2D(),
   layers.Conv2D(256, 3, padding='same', activation='relu'),
   layers.MaxPooling2D(),
+  layers.Conv2D(512, 3, padding='same', activation='relu'),
+  layers.MaxPooling2D(),
   layers.Flatten(),
-  layers.Dense(512, activation='relu'),
+  layers.Dense(1024, activation='relu'),
   layers.Dense(num_classes, name="outputs")
 ])
 
@@ -116,7 +118,7 @@ model.compile(optimizer='adam',
 
 model.summary()
 
-epochs=10
+epochs=150
 history = model.fit(
   train_ds,
   validation_data=val_ds,
