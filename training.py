@@ -32,6 +32,7 @@ IPET = '{}/IPET'.format(Directory)
 batch_size = 32
 img_height = 100
 img_width = 100
+dropout = 0.2
 
 #Generate training dataset
 train_ds = tf.keras.utils.image_dataset_from_directory(
@@ -97,12 +98,16 @@ model = Sequential([
   layers.Rescaling(1./255),
   layers.Conv2D(16, 3, padding='same', activation='relu'),
   layers.MaxPooling2D(),
+  layers.Dropout(dropout),
   layers.Conv2D(32, 3, padding='same', activation='relu'),
   layers.MaxPooling2D(),
+  layers.Dropout(dropout),
   layers.Conv2D(64, 3, padding='same', activation='relu'),
   layers.MaxPooling2D(),
+  layers.Dropout(dropout),
   layers.Conv2D(128, 3, padding='same', activation='relu'),
   layers.MaxPooling2D(),
+  layers.Dropout(dropout),
   layers.Conv2D(256, 3, padding='same', activation='relu'),
   layers.MaxPooling2D(),
   layers.Conv2D(512, 3, padding='same', activation='relu'),
@@ -118,7 +123,7 @@ model.compile(optimizer='adam',
 
 model.summary()
 
-epochs=150
+epochs=100
 history = model.fit(
   train_ds,
   validation_data=val_ds,
