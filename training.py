@@ -150,7 +150,7 @@ plt.plot(epochs_range, loss, label='Training Loss')
 plt.plot(epochs_range, val_loss, label='Validation Loss')
 plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
-plt.savefig('Training_summary.png')
+plt.savefig('Training_summary_100epoch_dropout2.png')
 
 # Convert the model.
 converter = tf.lite.TFLiteConverter.from_keras_model(model)
