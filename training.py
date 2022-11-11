@@ -101,25 +101,19 @@ model = Sequential([
   layers.Dropout(dropout),
   layers.Conv2D(32, 3, padding='same', activation='relu'),
   layers.MaxPooling2D(),
-  layers.Dropout(dropout),
   layers.Conv2D(64, 3, padding='same', activation='relu'),
   layers.MaxPooling2D(),
-  layers.Dropout(dropout),
   layers.Conv2D(128, 3, padding='same', activation='relu'),
   layers.MaxPooling2D(),
-  layers.Dropout(dropout),
-  layers.Conv2D(256, 3, padding='same', activation='relu'),
-  layers.MaxPooling2D(),
-  layers.Conv2D(512, 3, padding='same', activation='relu'),
-  layers.MaxPooling2D(),
   layers.Flatten(),
-  layers.Dense(1024, activation='relu'),
+  layers.Dense(256, activation='relu'),
   layers.Dense(num_classes, name="outputs")
 ])
 
 model.compile(optimizer='adam',
               loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-              metrics=['accuracy'])
+              metrics=['accuracy'],
+              learningrate=0.3)
 
 model.summary()
 
