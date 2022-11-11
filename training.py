@@ -117,7 +117,7 @@ model.compile(optimizer='adam',
 
 model.summary()
 
-epochs=100
+epochs=50
 history = model.fit(
   train_ds,
   validation_data=val_ds,
@@ -144,7 +144,7 @@ plt.plot(epochs_range, loss, label='Training Loss')
 plt.plot(epochs_range, val_loss, label='Validation Loss')
 plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
-plt.savefig('Training_summary_100epoch_dropout2.png')
+plt.savefig('Training_summary_50epoch_dropout2_learningrate03.png')
 
 # Convert the model.
 converter = tf.lite.TFLiteConverter.from_keras_model(model)
