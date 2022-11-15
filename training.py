@@ -110,10 +110,9 @@ model = Sequential([
   layers.Dense(num_classes, name="outputs")
 ])
 
-model.compile(optimizer='adam',
+model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-3),
               loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-              metrics=['accuracy'],
-              learningrate=0.3)
+              metrics=['accuracy'])
 
 model.summary()
 
