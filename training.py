@@ -9,17 +9,9 @@ import pathlib
 from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
+from sklearn.metrics import confusion_matrix, classification_report
+import seaborn as sns
 
-
-def confusionMatrix(labels, predictions):
-  tf.math.confusion_matrix(
-    labels,
-    predictions,
-    num_classes=None,
-    weights=None,
-    dtype=tf.dtypes.int32,
-    name=None
-  )
 #Data directories
 
 Directory = 'Classes/'
@@ -110,19 +102,18 @@ model = Sequential([
   layers.Dense(num_classes, name="outputs")
 ])
 
-model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-4),
+model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-5),
               loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
               metrics=['accuracy'])
 
 model.summary()
 
-epochs=50
+epochs=30
 history = model.fit(
   train_ds,
   validation_data=val_ds,
   epochs=epochs
 )
-
 acc = history.history['accuracy']
 val_acc = history.history['val_accuracy']
 
@@ -143,7 +134,7 @@ plt.plot(epochs_range, loss, label='Training Loss')
 plt.plot(epochs_range, val_loss, label='Validation Loss')
 plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
-plt.savefig('Training_summary_50epoch_dropout2_learningrate03.png')
+plt.savefig('Training_summary_30epoch_dropout2_learningrate1e-5.png')
 
 # Convert the model.
 converter = tf.lite.TFLiteConverter.from_keras_model(model)
