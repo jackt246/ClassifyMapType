@@ -1,16 +1,9 @@
 import tensorflow as tf
 import numpy as np
-import math
 import matplotlib.pyplot as plt
-import matplotlib.animation as animation
-import PIL
-import os
-import pathlib
 from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
-from sklearn.metrics import confusion_matrix, classification_report
-import seaborn as sns
 
 #Data directories
 
@@ -102,13 +95,13 @@ model = Sequential([
   layers.Dense(num_classes, name="outputs")
 ])
 
-model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-6),
+model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-7),
               loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
               metrics=['accuracy'])
 
 model.summary()
 
-epochs=80
+epochs=150
 history = model.fit(
   train_ds,
   validation_data=val_ds,
@@ -134,7 +127,7 @@ plt.plot(epochs_range, loss, label='Training Loss')
 plt.plot(epochs_range, val_loss, label='Validation Loss')
 plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
-plt.savefig('Training_summary_80epoch_dropout2_learningrate1e-6.png')
+plt.savefig('Training_summary_150epoch_dropout2_learningrate1e-7.png')
 
 # Convert the model.
 converter = tf.lite.TFLiteConverter.from_keras_model(model)
