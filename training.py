@@ -8,9 +8,8 @@ from tensorflow.keras.models import Sequential
 #Data directories
 
 Directory = 'Classes/'
-SubTomo = '{}/SubtomogramAverage'.format(Directory)
+NonTomograms = '{}/NonTomograms'.format(Directory)
 Tomograms = '{}/Tomograms'.format(Directory)
-IPET = '{}/IPET'.format(Directory)
 
 
 #Set up information on the data
@@ -61,12 +60,10 @@ normalization_layer = layers.Rescaling(1./255)
 
 normalized_ds = train_ds.map(lambda x, y: (normalization_layer(x), y))
 image_batch, labels_batch = next(iter(normalized_ds))
-first_image = image_batch[0]
-# Notice the pixel values are now in `[0,1]`.
-print(np.min(first_image), np.max(first_image))
 
 num_classes = len(class_names)
 
+#Add data augmentation to increase the amount of training data
 data_augmentation = keras.Sequential(
   [
     layers.RandomFlip("horizontal",
@@ -95,13 +92,13 @@ model = Sequential([
   layers.Dense(num_classes, name="outputs")
 ])
 
-model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-6),
+model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-3),
               loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
               metrics=['accuracy'])
 
 model.summary()
 
-epochs=500
+epochs=50
 history = model.fit(
   train_ds,
   validation_data=val_ds,
@@ -127,12 +124,12 @@ plt.plot(epochs_range, loss, label='Training Loss')
 plt.plot(epochs_range, val_loss, label='Validation Loss')
 plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
-plt.savefig('Training_summary_500epoch_dropout2_learningrate1e-6.png')
+plt.savefig('Training_summary_50epoch_dropout2_learningrate1e-3_TomogramCheck.png')
 
 # Convert the model.
 converter = tf.lite.TFLiteConverter.from_keras_model(model)
 tflite_model = converter.convert()
 
 # Save the model.
-with open('model_withIPET.tflite', 'wb') as f:
+with open('model_TomogramCheck.tflite', 'wb') as f:
   f.write(tflite_model)
