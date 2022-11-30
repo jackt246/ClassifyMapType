@@ -80,15 +80,13 @@ model = Sequential([
   layers.Rescaling(1./255),
   layers.Conv2D(16, 3, padding='same', activation='relu'),
   layers.MaxPooling2D(),
-  layers.Dropout(dropout),
+  #layers.Dropout(dropout),
   layers.Conv2D(32, 3, padding='same', activation='relu'),
   layers.MaxPooling2D(),
   layers.Conv2D(64, 3, padding='same', activation='relu'),
   layers.MaxPooling2D(),
-  layers.Conv2D(128, 3, padding='same', activation='relu'),
-  layers.MaxPooling2D(),
   layers.Flatten(),
-  layers.Dense(256, activation='relu'),
+  layers.Dense(128, activation='relu'),
   layers.Dense(num_classes, name="outputs")
 ])
 
@@ -98,7 +96,7 @@ model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-4),
 
 model.summary()
 
-epochs=10
+epochs=20
 history = model.fit(
   train_ds,
   validation_data=val_ds,
@@ -124,7 +122,7 @@ plt.plot(epochs_range, loss, label='Training Loss')
 plt.plot(epochs_range, val_loss, label='Validation Loss')
 plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
-plt.savefig('Training_summary_10epoch_dropout05_learningrate1e-4_TomogramCheck.png')
+plt.savefig('Training_summary_20epoch_learningrate1e-4_TomogramCheck.png')
 
 # Convert the model.
 converter = tf.lite.TFLiteConverter.from_keras_model(model)
