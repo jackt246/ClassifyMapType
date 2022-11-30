@@ -16,7 +16,7 @@ Tomograms = '{}/Tomograms'.format(Directory)
 batch_size = 32
 img_height = 100
 img_width = 100
-dropout = 0.2
+dropout = 0.05
 
 #Generate training dataset
 train_ds = tf.keras.utils.image_dataset_from_directory(
@@ -92,13 +92,13 @@ model = Sequential([
   layers.Dense(num_classes, name="outputs")
 ])
 
-model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-5),
+model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-4),
               loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
               metrics=['accuracy'])
 
 model.summary()
 
-epochs=50
+epochs=10
 history = model.fit(
   train_ds,
   validation_data=val_ds,
@@ -124,7 +124,7 @@ plt.plot(epochs_range, loss, label='Training Loss')
 plt.plot(epochs_range, val_loss, label='Validation Loss')
 plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
-plt.savefig('Training_summary_50epoch_dropout2_learningrate1e-5_TomogramCheck.png')
+plt.savefig('Training_summary_10epoch_dropout05_learningrate1e-4_TomogramCheck.png')
 
 # Convert the model.
 converter = tf.lite.TFLiteConverter.from_keras_model(model)
