@@ -90,13 +90,13 @@ model = Sequential([
   layers.Dense(num_classes, name="outputs")
 ])
 
-model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-4),
+model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-6),
               loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
               metrics=['accuracy'])
 
 model.summary()
 
-epochs=20
+epochs=200
 history = model.fit(
   train_ds,
   validation_data=val_ds,
@@ -122,7 +122,7 @@ plt.plot(epochs_range, loss, label='Training Loss')
 plt.plot(epochs_range, val_loss, label='Validation Loss')
 plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
-plt.savefig('Training_summary_20epoch_learningrate1e-4_TomogramCheck.png')
+plt.savefig('Training_summary_200epoch_learningrate1e-6_TomogramCheck.png')
 
 # Convert the model.
 converter = tf.lite.TFLiteConverter.from_keras_model(model)
