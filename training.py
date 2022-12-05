@@ -16,7 +16,7 @@ Tomograms = '{}/Tomograms'.format(Directory)
 batch_size = 32
 img_height = 100
 img_width = 100
-dropout = 0
+dropout = 0.2
 
 #Generate training dataset
 train_ds = tf.keras.utils.image_dataset_from_directory(
@@ -83,6 +83,7 @@ model = Sequential([
   layers.MaxPooling2D(),
   layers.Conv2D(64, 3, padding='same', activation='relu'),
   layers.MaxPooling2D(),
+  layers.Dropout(dropout),
   layers.Flatten(),
   layers.Dense(128, activation='relu'),
   layers.Dense(num_classes)
@@ -120,7 +121,7 @@ plt.plot(epochs_range, loss, label='Training Loss')
 plt.plot(epochs_range, val_loss, label='Validation Loss')
 plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
-plt.savefig('Training_summary_10epoch_TomogramCheck.png')
+plt.savefig('Training_summary_10epoch_dropout02_TomogramCheck.png')
 
 # Convert the model.
 converter = tf.lite.TFLiteConverter.from_keras_model(model)
