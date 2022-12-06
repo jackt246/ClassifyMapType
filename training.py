@@ -76,6 +76,7 @@ data_augmentation = keras.Sequential(
 )
 
 model = Sequential([
+  data_augmentation,
   layers.Rescaling(1./255, input_shape=(img_height, img_width, 3)),
   layers.Conv2D(16, 3, padding='same', activation='relu'),
   layers.MaxPooling2D(),
@@ -95,7 +96,7 @@ model.compile(optimizer='adam',
 
 model.summary()
 
-epochs=10
+epochs=50
 history = model.fit(
   train_ds,
   validation_data=val_ds,
@@ -121,7 +122,7 @@ plt.plot(epochs_range, loss, label='Training Loss')
 plt.plot(epochs_range, val_loss, label='Validation Loss')
 plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
-plt.savefig('Training_summary_10epoch_dropout02_TomogramCheck.png')
+plt.savefig('Training_summary_50epoch_dropout02_dataaug_TomogramCheck.png')
 
 # Convert the model.
 converter = tf.lite.TFLiteConverter.from_keras_model(model)
