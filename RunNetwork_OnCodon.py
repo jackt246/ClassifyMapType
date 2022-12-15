@@ -39,7 +39,7 @@ class CentralSlicer():
         midz = z//2
         return self.array[midy, :, midz]
 
-Folder = 'SubtomogramAverages'
+Folder = '/hps/nobackup/gerard/emdb/ClassifyMapType/SubtomogramAverages'
 FilesList = os.listdir(Folder)
 
 Results = pd.DataFrame(columns=['Map', 'Expected Type', 'Predicted Type', 'Prediction score %'])
@@ -69,7 +69,7 @@ for file in FilesList:
 
 
     #Import network
-    TF_MODEL_FILE_PATH = 'model.tflite' # The default path to the saved TensorFlow Lite model
+    TF_MODEL_FILE_PATH = '50epoch_dropout02_model_15122022.tflite'
     interpreter = tf.lite.Interpreter(model_path=TF_MODEL_FILE_PATH)
     classify_lite = interpreter.get_signature_runner('serving_default')
     predictions_lite = classify_lite(rescaling_1_input=img_array)['dense_1']
