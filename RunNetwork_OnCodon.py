@@ -39,7 +39,7 @@ class CentralSlicer():
         midz = z//2
         return self.array[midy, :, midz]
 
-Folder = '/hps/nobackup/gerard/emdb/ClassifyMapType/SubtomogramAverages'
+Folder = '/hps/nobackup/gerard/emdb/ClassifyMapType/Tomograms'
 FilesList = os.listdir(Folder)
 
 Results = pd.DataFrame(columns=['Map', 'Expected Type', 'Predicted Type', 'Prediction score %'])
@@ -54,8 +54,8 @@ for file in FilesList:
     Z = MapEdit.CentSliceZ()
 
 
-    plt.imsave('ImageToClassify_subtomo.png', Z, cmap='Greys')
-    ImageLoc = 'ImageToClassify_subtomo.png'
+    plt.imsave('ImageToClassify_tomo.png', Z, cmap='Greys')
+    ImageLoc = 'ImageToClassify_tomo.png'
 
     #Set up information on the data
     img_height = 100
@@ -86,5 +86,5 @@ for file in FilesList:
     Results = Results.append(data, ignore_index=True)
 
 print(Results)
-Results.to_csv('results_subtomo.csv'.format(Folder))
+Results.to_csv('results_tomo.csv'.format(Folder))
 
