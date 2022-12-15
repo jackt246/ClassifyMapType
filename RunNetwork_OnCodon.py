@@ -86,5 +86,5 @@ for file in FilesList:
     Results = Results.append(data, ignore_index=True)
 
 print(Results)
-Results.to_csv('results_{}_subtomo.csv'.format(Folder))
+Results.to_csv('results_subtomo.csv'.format(Folder))
 
