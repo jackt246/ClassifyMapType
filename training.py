@@ -89,13 +89,13 @@ model = Sequential([
   layers.Dense(num_classes)
 ])
 
-model.compile(optimizer='adam',
+model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-4),
               loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
               metrics=['accuracy'])
 
 model.summary()
 
-epochs=50
+epochs=100
 history = model.fit(
   train_ds,
   validation_data=val_ds,
