@@ -7,10 +7,9 @@ from tensorflow.keras.models import Sequential
 
 #Data directories
 
-Directory = 'Classes/'
-SubTomo = '{}/SubtomogramAverage'.format(Directory)
+Directory = 'Classes100/'
+SubTomo = '{}/NonTomograms'.format(Directory)
 Tomograms = '{}/Tomograms'.format(Directory)
-IPET = '{}/IPET'.format(Directory)
 
 
 #Set up information on the data
@@ -22,7 +21,7 @@ dropout = 0.2
 #Generate training dataset
 train_ds = tf.keras.utils.image_dataset_from_directory(
   Directory,
-  validation_split=0.85,
+  validation_split=0.8,
   subset="training",
   seed=123,
   image_size=(img_height, img_width),
@@ -31,7 +30,7 @@ train_ds = tf.keras.utils.image_dataset_from_directory(
 #Generate val dataset
 val_ds = tf.keras.utils.image_dataset_from_directory(
   Directory,
-  validation_split=0.15,
+  validation_split=0.2,
   subset="validation",
   seed=123,
   image_size=(img_height, img_width),
@@ -98,13 +97,13 @@ model = Sequential([
   layers.Dense(num_classes, name="outputs")
 ])
 
-model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-7),
+model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-3),
               loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
               metrics=['accuracy'])
 
 model.summary()
 #chose number of epochs
-epochs=1000
+epochs=50
 
 #train and save as a history object for plotting.
 history = model.fit(
@@ -134,7 +133,7 @@ plt.plot(epochs_range, loss, label='Training Loss')
 plt.plot(epochs_range, val_loss, label='Validation Loss')
 plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
-plt.savefig('Training_summary_1000epoch_dropout2_learningrate1e-7.png')
+plt.savefig('Training_summary_ImgSize100_learningrate1e3_epoch50.png')
 
 # Convert the model to a tf lite model
 converter = tf.lite.TFLiteConverter.from_keras_model(model)
