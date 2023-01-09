@@ -160,8 +160,8 @@ def PrepMapsProject(DirectoryName, OutputDir):
             map = OpenMrc('{}/{}'.format(DirectoryName, file))
             SaveAndProject(map, file, OutputDir)
 
-DirectoryName = ('Tomograms')
-OutputDir = ('Classes100/Tomograms')
+DirectoryName = ('NonTomograms')
+OutputDir = ('Classes100/NonTomograms')
 
 PrepMapsResize(DirectoryName, OutputDir)
       
