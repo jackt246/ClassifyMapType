@@ -16,7 +16,7 @@ Tomograms = '{}/Tomograms'.format(Directory)
 batch_size = 32
 img_height = 300
 img_width = 300
-dropout = 0.5
+dropout = 0
 
 #Generate training dataset
 train_ds = tf.keras.utils.image_dataset_from_directory(
