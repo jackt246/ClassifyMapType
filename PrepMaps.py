@@ -88,19 +88,19 @@ def SaveAndResize(array, axis, extension, Directory):
         #For each only save the central 80% of the data, this will hopefully remove any masked regions and horrible boundary crap
         for plane in range(int((length[2] / 10)), int(((length[2] / 100) * 90))):
             CurrentPlane = array[:,:,plane]
-            CurrentPlaneResize = np.resize(CurrentPlane, (100,100))
+            CurrentPlaneResize = np.resize(CurrentPlane, (200,200))
             plt.imsave('{}/{}_{}.png'.format(Directory, plane, extension), CurrentPlaneResize, cmap='Greys')
     elif axis in ['Y', 'y']:
         #print('doing y')
         for plane in range(int((length[0] / 10)), int(((length[0] / 100) * 90))):
                 CurrentPlane = array[plane,:,:]
-                CurrentPlaneResize = np.resize(CurrentPlane, (100, 100))
+                CurrentPlaneResize = np.resize(CurrentPlane, (200, 200))
                 plt.imsave('{}/{}_{}.png'.format(Directory, plane, extension), CurrentPlaneResize, cmap='Greys')
     elif axis in ['X', 'x']:
         #print('doing x')
         for plane in range(int((length[1] / 10)), int(((length[1] / 100) * 90))):
             CurrentPlane = array[:,plane,:]
-            CurrentPlaneResize = np.resize(CurrentPlane, (100, 100))
+            CurrentPlaneResize = np.resize(CurrentPlane, (200, 200))
             plt.imsave('{}/{}_{}.png'.format(Directory, plane, extension), CurrentPlaneResize, cmap='Greys')
 
 def SaveAndProject(array, extension, Directory):
@@ -161,7 +161,11 @@ def PrepMapsProject(DirectoryName, OutputDir):
             SaveAndProject(map, file, OutputDir)
 
 DirectoryName = ('NonTomograms')
-OutputDir = ('Classes100/NonTomograms')
+OutputDir = ('Classes200/NonTomograms')
+
+DirectoryName2 = ('Tomograms')
+OutputDir2 = ('Classes200/Tomograms')
 
 PrepMapsResize(DirectoryName, OutputDir)
+PrepMapsResize(DirectoryName2, OutputDir2)
       
