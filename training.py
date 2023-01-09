@@ -7,7 +7,7 @@ from tensorflow.keras.models import Sequential
 
 #Data directories
 
-Directory = 'Classes200/'
+Directory = 'Classes100/'
 SubTomo = '{}/NonTomograms'.format(Directory)
 Tomograms = '{}/Tomograms'.format(Directory)
 
