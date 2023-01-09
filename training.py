@@ -7,7 +7,7 @@ from tensorflow.keras.models import Sequential
 
 #Data directories
 
-Directory = 'Classes100/'
+Directory = 'Classes200/'
 SubTomo = '{}/NonTomograms'.format(Directory)
 Tomograms = '{}/Tomograms'.format(Directory)
 
@@ -16,7 +16,7 @@ Tomograms = '{}/Tomograms'.format(Directory)
 batch_size = 32
 img_height = 100
 img_width = 100
-dropout = 0.2
+dropout = 0
 
 #Generate training dataset
 train_ds = tf.keras.utils.image_dataset_from_directory(
