@@ -161,7 +161,7 @@ def PrepMapsProject(DirectoryName, OutputDir):
             SaveAndProject(map, file, OutputDir)
 
 DirectoryName = ('Tomograms')
-OutputDir = ('Classes/Tomograms')
+OutputDir = ('Classes100/Tomograms')
 
 PrepMapsResize(DirectoryName, OutputDir)
       
