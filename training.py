@@ -16,7 +16,7 @@ Tomograms = '{}/Tomograms'.format(Directory)
 batch_size = 32
 img_height = 300
 img_width = 300
-dropout = 0.3
+dropout = 0.4
 
 #Generate training dataset
 train_ds = tf.keras.utils.image_dataset_from_directory(
@@ -133,7 +133,7 @@ plt.plot(epochs_range, loss, label='Training Loss')
 plt.plot(epochs_range, val_loss, label='Validation Loss')
 plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
-figtitle='Training_summary_ImgSize300_learningrate1e3_epoch50_dropout03.png'
+figtitle='Training_summary_ImgSize300_learningrate1e3_epoch50_dropout04.png'
 plt.savefig(figtitle)
 print(figtitle)
 
