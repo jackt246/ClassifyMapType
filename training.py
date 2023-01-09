@@ -7,15 +7,15 @@ from tensorflow.keras.models import Sequential
 
 #Data directories
 
-Directory = 'Classes200/'
+Directory = 'Classes300/'
 SubTomo = '{}/NonTomograms'.format(Directory)
 Tomograms = '{}/Tomograms'.format(Directory)
 
 
 #Set up information on the data
 batch_size = 32
-img_height = 200
-img_width = 200
+img_height = 300
+img_width = 300
 dropout = 0
 
 #Generate training dataset
@@ -133,7 +133,7 @@ plt.plot(epochs_range, loss, label='Training Loss')
 plt.plot(epochs_range, val_loss, label='Validation Loss')
 plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
-plt.savefig('Training_summary_ImgSize200_learningrate1e3_epoch50.png')
+plt.savefig('Training_summary_ImgSize300_learningrate1e3_epoch50.png')
 
 # Convert the model to a tf lite model
 converter = tf.lite.TFLiteConverter.from_keras_model(model)
