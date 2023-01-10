@@ -104,7 +104,7 @@ model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-3),
 
 model.summary()
 #chose number of epochs
-epochs=500
+epochs=50
 
 #train and save as a history object for plotting.
 history = model.fit(
