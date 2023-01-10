@@ -17,7 +17,7 @@ Tomograms = '{}/Tomograms'.format(Directory)
 batch_size = 32
 img_height = 300
 img_width = 300
-dropout = 0.2
+dropout = 0
 
 #Generate training dataset
 train_ds = tf.keras.utils.image_dataset_from_directory(
@@ -104,7 +104,7 @@ model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-3),
 
 model.summary()
 #chose number of epochs
-epochs=50
+epochs=200
 
 #train and save as a history object for plotting.
 history = model.fit(
@@ -134,8 +134,8 @@ plt.plot(epochs_range, loss, label='Training Loss')
 plt.plot(epochs_range, val_loss, label='Validation Loss')
 plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
-figtitle='Training_summary_ImgSize300_dropout02_epoch50.png'
-plt.savefig(figtitle)
+figtitle='Training_summary_ImgSize300_learningrate1e3_epoch200.png'
+plt.savefig('Outputs/{}'.format(figtitle))
 print(figtitle)
 
 # Convert the model to a tf lite model
@@ -145,7 +145,7 @@ tflite_model = converter.convert()
 #Output the graph values
 data = [[acc, val_acc, loss, val_loss]]
 df = pd.DataFrame(data, columns=['Accuracy', 'Val_Accuracy', 'Loss', 'Val_Loss'])
-df.to_csv('{}.csv'.format(figtitle.strip('.png')))
+df.to_csv('Outputs/{}.csv'.format(figtitle.strip('.png')))
 
 # Save the model.
 with open('model_withIPET.tflite', 'wb') as f:
