@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
+import pandas as pd
 
 #Data directories
 
@@ -16,7 +17,7 @@ Tomograms = '{}/Tomograms'.format(Directory)
 batch_size = 32
 img_height = 300
 img_width = 300
-dropout = 0
+dropout = 0.2
 
 #Generate training dataset
 train_ds = tf.keras.utils.image_dataset_from_directory(
@@ -97,7 +98,7 @@ model = Sequential([
   layers.Dense(num_classes, name="outputs")
 ])
 
-model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-4),
+model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-3),
               loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
               metrics=['accuracy'])
 
@@ -133,13 +134,18 @@ plt.plot(epochs_range, loss, label='Training Loss')
 plt.plot(epochs_range, val_loss, label='Validation Loss')
 plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
-figtitle='Training_summary_ImgSize300_learningrate1e4_epoch50.png'
+figtitle='Training_summary_ImgSize300_dropout02_epoch50.png'
 plt.savefig(figtitle)
 print(figtitle)
 
 # Convert the model to a tf lite model
 converter = tf.lite.TFLiteConverter.from_keras_model(model)
 tflite_model = converter.convert()
+
+#Output the graph values
+data = [[acc, val_acc, loss, val_loss]]
+df = pd.DataFrame(data, columns=['Accuracy', 'Val_Accuracy', 'Loss', 'Val_Loss'])
+df.to_csv('{}.csv'.format(figtitle.strip('.png')))
 
 # Save the model.
 with open('model_withIPET.tflite', 'wb') as f:
