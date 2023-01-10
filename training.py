@@ -16,7 +16,7 @@ Tomograms = '{}/Tomograms'.format(Directory)
 batch_size = 32
 img_height = 300
 img_width = 300
-dropout = 0.5
+dropout = 0
 
 #Generate training dataset
 train_ds = tf.keras.utils.image_dataset_from_directory(
@@ -97,7 +97,7 @@ model = Sequential([
   layers.Dense(num_classes, name="outputs")
 ])
 
-model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-3),
+model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-4),
               loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
               metrics=['accuracy'])
 
@@ -133,7 +133,7 @@ plt.plot(epochs_range, loss, label='Training Loss')
 plt.plot(epochs_range, val_loss, label='Validation Loss')
 plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
-figtitle='Training_summary_ImgSize300_dropout05_epoch50.png'
+figtitle='Training_summary_ImgSize300_learningrate1e4_epoch50.png'
 plt.savefig(figtitle)
 print(figtitle)
 
