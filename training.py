@@ -143,7 +143,7 @@ converter = tf.lite.TFLiteConverter.from_keras_model(model)
 tflite_model = converter.convert()
 
 #Output the graph values
-data = [acc, val_acc, loss, val_loss]
+data = [[[acc], [val_acc], [loss], [val_loss]]]
 df = pd.DataFrame(data, columns=['Accuracy', 'Val_Accuracy', 'Loss', 'Val_Loss'])
 df.to_csv('Outputs/{}.csv'.format(figtitle.strip('.png')))
 
