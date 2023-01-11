@@ -98,13 +98,13 @@ model = Sequential([
   layers.Dense(num_classes, name="outputs")
 ])
 
-model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-4),
+model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-6),
               loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
               metrics=['accuracy'])
 
 model.summary()
 #chose number of epochs
-epochs=100
+epochs=250
 
 #train and save as a history object for plotting.
 history = model.fit(
@@ -134,7 +134,7 @@ plt.plot(epochs_range, loss, label='Training Loss')
 plt.plot(epochs_range, val_loss, label='Validation Loss')
 plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
-figtitle='Training_summary_ImgSize300_learningrate1e4_epoch100.png'
+figtitle='Training_summary_ImgSize300_learningrate1e6_epoch250_dropout0.png'
 plt.savefig('Outputs/{}'.format(figtitle))
 print(figtitle)
 
