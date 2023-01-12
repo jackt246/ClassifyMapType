@@ -135,7 +135,7 @@ plt.plot(epochs_range, val_loss, label='Validation Loss')
 plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
 figtitle='Training_summary_ImgSize500_learningrate1e6_epoch250.png'
-plt.savefig('Outputs/{}'.format(figtitle))ls -1 | wc -l
+plt.savefig('Outputs/{}'.format(figtitle))
 print(figtitle)
 
 # Convert the model to a tf lite model
