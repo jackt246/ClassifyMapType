@@ -8,9 +8,10 @@ import pandas as pd
 
 #Data directories
 
-Directory = 'Classes100/'
-SubTomo = '{}/NonTomograms'.format(Directory)
+Directory = 'Classes/'
+SubTomo = '{}/SubtomogramAverage'.format(Directory)
 Tomograms = '{}/Tomograms'.format(Directory)
+IPET = '{}/IPET'.format(Directory)
 
 
 #Set up information on the data
