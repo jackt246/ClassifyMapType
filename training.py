@@ -8,7 +8,7 @@ import pandas as pd
 
 #Data directories
 
-Directory = 'Classes400/'
+Directory = 'Classes/'
 SubTomo = '{}/NonTomograms'.format(Directory)
 Tomograms = '{}/Tomograms'.format(Directory)
 
