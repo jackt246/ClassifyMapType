@@ -1,6 +1,8 @@
 import os
 
 #Codon environment setup
+
+os.system('conda activate jack')
 os.system('module load cuda-11.1.1-gcc-9.3.0-oqr2b7d')
 os.system('module load cudnn-8.0.4.30-11.1-gcc-9.3.0-bbr3kjv')
 
