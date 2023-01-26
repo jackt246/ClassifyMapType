@@ -1,3 +1,10 @@
+import os
+
+#Codon environment setup
+
+os.system('module load cuda-11.1.1-gcc-9.3.0-oqr2b7d')
+os.system('module load cudnn-8.0.4.30-11.1-gcc-9.3.0-bbr3kjv')
+
 import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
@@ -16,8 +23,8 @@ IPET = '{}/IPET'.format(Directory)
 
 #Set up information on the data
 batch_size = 32
-img_height = 300
-img_width = 300
+img_height = 100
+img_width = 100
 dropout = 0
 
 #Generate training dataset
