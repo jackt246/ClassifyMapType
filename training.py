@@ -23,9 +23,9 @@ Tomograms = '{}/Tomograms'.format(Directory)
 
 
 #Set up information on the data
-batch_size = 1
-img_height = 300
-img_width = 300
+batch_size = 32
+img_height = 100
+img_width = 100
 dropout = 0
 
 #Generate training dataset
