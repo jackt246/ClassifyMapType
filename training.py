@@ -143,7 +143,7 @@ plt.plot(epochs_range, loss, label='Training Loss')
 plt.plot(epochs_range, val_loss, label='Validation Loss')
 plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
-figtitle='Training_summary_ImgSize400_learningrate1e6_epoch250.png'
+figtitle='Training_summary_ImgSize100_learningrate1e6_epoch250.png'
 plt.savefig('Outputs/{}'.format(figtitle))
 print(figtitle)
 
