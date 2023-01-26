@@ -23,7 +23,7 @@ Tomograms = '{}/Tomograms'.format(Directory)
 
 
 #Set up information on the data
-batch_size = 16
+batch_size = 1
 img_height = 300
 img_width = 300
 dropout = 0
