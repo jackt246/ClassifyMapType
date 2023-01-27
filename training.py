@@ -93,27 +93,27 @@ data_augmentation = keras.Sequential(
 model = Sequential([
   data_augmentation,
   layers.Rescaling(1./255),
-  layers.Conv2D(16, 3, padding='same', activation='relu'),
-  layers.MaxPooling2D(),
-  layers.Dropout(dropout),
   layers.Conv2D(32, 3, padding='same', activation='relu'),
   layers.MaxPooling2D(),
+  layers.Dropout(dropout),
   layers.Conv2D(64, 3, padding='same', activation='relu'),
   layers.MaxPooling2D(),
   layers.Conv2D(128, 3, padding='same', activation='relu'),
   layers.MaxPooling2D(),
+  layers.Conv2D(256, 3, padding='same', activation='relu'),
+  layers.MaxPooling2D(),
   layers.Flatten(),
-  layers.Dense(256, activation='relu'),
+  layers.Dense(512, activation='relu'),
   layers.Dense(num_classes, name="outputs")
 ])
 
-model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-6),
+model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-5),
               loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
               metrics=['accuracy'])
 
 model.summary()
 #chose number of epochs
-epochs=250
+epochs=200
 
 #train and save as a history object for plotting.
 history = model.fit(
@@ -143,7 +143,7 @@ plt.plot(epochs_range, loss, label='Training Loss')
 plt.plot(epochs_range, val_loss, label='Validation Loss')
 plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
-figtitle='Training_summary_ImgSize100_learningrate1e6_epoch250.png'
+figtitle='Training_summary_ImgSize100_learningrate1e5_epoch200_wdienetwork2.png'
 plt.savefig('Outputs/{}'.format(figtitle))
 print(figtitle)
 
