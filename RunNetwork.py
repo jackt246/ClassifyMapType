@@ -56,8 +56,11 @@ class runModel():
 
     def runPrediction(self):
         interpreter = tf.lite.Interpreter(model_path=self.modelPath)
+        signatures = interpreter.get_signature_list()
+        print('Signature: {}'.format(signatures))
         classify_lite = interpreter.get_signature_runner('serving_default')
         predictions_lite = classify_lite(rescaling_1_input=self.imgArray)['dense_1']
+        print(predictions_lite)
         score_lite = tf.nn.softmax(predictions_lite)
 
         class_names = ['Non-Tomogram', 'Tomogram']
@@ -81,7 +84,8 @@ ImageLoc = 'ImageToClassify.png'
 
 #Set up information on the data
 
-mapTypePredictor = runModel('Training_summary_fullDataSet_ImgSize100_learningrate1e3_epoch75_wdienetwork2_NETWORK.tflite')
+#mapTypePredictor = runModel('Training_summary_fullDataSet_ImgSize100_learningrate1e3_epoch75_wdienetwork2_NETWORK.tflite')
+mapTypePredictor = runModel('model.tflite')
 mapTypePredictor.imageSetup(ImageLoc)
 mapTypePredictor.runPrediction()
 
