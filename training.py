@@ -23,7 +23,7 @@ Tomograms = '{}/Tomograms'.format(Directory)
 
 
 #Set up information on the data
-batch_size = 32
+batch_size = 1
 img_height = 100
 img_width = 100
 dropout = 0
@@ -143,7 +143,7 @@ plt.plot(epochs_range, loss, label='Training Loss')
 plt.plot(epochs_range, val_loss, label='Validation Loss')
 plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
-figtitle='Training_summary_fullDataSet_ImgSize100_learningrate1e6_epoch300_widenetwork2.png'
+figtitle='Training_summary_fullDataSet_ImgSize100_learningrate1e5_epoch50_widenetwork2_SGD.png'
 plt.savefig('Outputs/{}'.format(figtitle))
 print(figtitle)
 
