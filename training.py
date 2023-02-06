@@ -26,7 +26,7 @@ Tomograms = '{}/Tomograms'.format(Directory)
 batch_size = 1
 img_height = 100
 img_width = 100
-dropout = 0
+dropout = 0.2
 
 #Generate training dataset
 train_ds = tf.keras.utils.image_dataset_from_directory(
@@ -93,27 +93,27 @@ data_augmentation = keras.Sequential(
 model = Sequential([
   data_augmentation,
   layers.Rescaling(1./255),
+  layers.Conv2D(16, 3, padding='same', activation='relu'),
+  layers.MaxPooling2D(),
   layers.Conv2D(32, 3, padding='same', activation='relu'),
   layers.MaxPooling2D(),
-  layers.Dropout(dropout),
   layers.Conv2D(64, 3, padding='same', activation='relu'),
   layers.MaxPooling2D(),
   layers.Conv2D(128, 3, padding='same', activation='relu'),
-  layers.MaxPooling2D(),
-  layers.Conv2D(256, 3, padding='same', activation='relu'),
+  layers.Dropout(dropout),
   layers.MaxPooling2D(),
   layers.Flatten(),
-  layers.Dense(512, activation='relu'),
+  layers.Dense(256, activation='relu'),
   layers.Dense(num_classes, name="outputs")
 ])
 
-model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-6),
+model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-4),
               loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
               metrics=['accuracy'])
 
 model.summary()
 #chose number of epochs
-epochs=300
+epochs=15
 
 #train and save as a history object for plotting.
 history = model.fit(
@@ -143,7 +143,7 @@ plt.plot(epochs_range, loss, label='Training Loss')
 plt.plot(epochs_range, val_loss, label='Validation Loss')
 plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
-figtitle='Training_summary_fullDataSet_ImgSize100_learningrate1e5_epoch50_widenetwork2_SGD.png'
+figtitle='Training_summary_fullDataSet_ImgSize100_learningrate1e4_epoch15_dropout02_SGD.png'
 plt.savefig('Outputs/{}'.format(figtitle))
 print(figtitle)
 
