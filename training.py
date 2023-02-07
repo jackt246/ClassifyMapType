@@ -31,7 +31,7 @@ dropout = 0.2
 #Generate training dataset
 train_ds = tf.keras.utils.image_dataset_from_directory(
   Directory,
-  validation_split=0.95,
+  validation_split=0.975,
   subset="training",
   seed=123,
   image_size=(img_height, img_width),
@@ -40,7 +40,7 @@ train_ds = tf.keras.utils.image_dataset_from_directory(
 #Generate val dataset
 val_ds = tf.keras.utils.image_dataset_from_directory(
   Directory,
-  validation_split=0.05,
+  validation_split=0.025,
   subset="validation",
   seed=123,
   image_size=(img_height, img_width),
@@ -102,7 +102,7 @@ model = Sequential([
   layers.Dense(num_classes, activation='softmax', name="outputs")
 ])
 
-model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-4),
+model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-3),
               loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
               metrics=['accuracy'])
 
@@ -138,7 +138,7 @@ plt.plot(epochs_range, loss, label='Training Loss')
 plt.plot(epochs_range, val_loss, label='Validation Loss')
 plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
-figtitle='Training_summary_fullDataSet_ImgSize100_learningrate1e4_epoch10_dropout02_SGD.png'
+figtitle='Training_summary_fullDataSet_ImgSize100_learningrate1e3_epoch10_dropout02_SGD.png'
 plt.savefig('Outputs/{}'.format(figtitle))
 print(figtitle)
 
