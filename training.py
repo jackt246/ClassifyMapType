@@ -31,7 +31,7 @@ dropout = 0.2
 #Generate training dataset
 train_ds = tf.keras.utils.image_dataset_from_directory(
   Directory,
-  validation_split=0.8,
+  validation_split=0.95,
   subset="training",
   seed=123,
   image_size=(img_height, img_width),
@@ -40,7 +40,7 @@ train_ds = tf.keras.utils.image_dataset_from_directory(
 #Generate val dataset
 val_ds = tf.keras.utils.image_dataset_from_directory(
   Directory,
-  validation_split=0.2,
+  validation_split=0.05,
   subset="validation",
   seed=123,
   image_size=(img_height, img_width),
@@ -56,11 +56,6 @@ for image_batch, labels_batch in train_ds:
   break
 
 #performance optimisation
-AUTOTUNE = tf.data.AUTOTUNE
-
-train_ds = train_ds.cache().shuffle(1000).prefetch(buffer_size=AUTOTUNE)
-val_ds = val_ds.cache().prefetch(buffer_size=AUTOTUNE)
-
 AUTOTUNE = tf.data.AUTOTUNE
 
 train_ds = train_ds.cache().shuffle(1000).prefetch(buffer_size=AUTOTUNE)
@@ -113,7 +108,7 @@ model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-4),
 
 model.summary()
 #chose number of epochs
-epochs=15
+epochs=10
 
 #train and save as a history object for plotting.
 history = model.fit(
