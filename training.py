@@ -99,7 +99,7 @@ model = Sequential([
   layers.MaxPooling2D(),
   layers.Flatten(),
   layers.Dense(256, activation='relu'),
-  layers.Dense(num_classes, name="outputs")
+  layers.Dense(num_classes, activation='softmax', name="outputs")
 ])
 
 model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-4),
