@@ -88,7 +88,7 @@ for file in FilesList:
     mapTypePredictor = runModel('model_resize.tflite')
     mapTypePredictor.imageSetup(ImageLoc)
     data = mapTypePredictor.runPrediction()
-    Results = pd.concat(Results, data)
+    Results = pd.concat([Results, data], ignore_index=True)
 
 print(Results)
 Results.to_csv('results_{}.csv'.format(Class))
