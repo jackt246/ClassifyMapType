@@ -59,7 +59,8 @@ class runModel():
         signatures = interpreter.get_signature_list()
         print('Signature: {}'.format(signatures))
         classify_lite = interpreter.get_signature_runner('serving_default')
-        predictions_lite = classify_lite(rescaling_1_input=self.imgArray)['outputs']
+        print('Classify_lite: {}'.format(classify_lite))
+        predictions_lite = classify_lite(rescaling_1_input=self.imgArray)['dense_1']
         print(predictions_lite)
         score_lite = tf.nn.softmax(predictions_lite)
 
@@ -84,7 +85,8 @@ ImageLoc = 'ImageToClassify.png'
 
 #Set up information on the data
 
-mapTypePredictor = runModel('model_SGD_subsetdata_10epoch_90val.tflite')
+#mapTypePredictor = runModel('model_SGD_subsetdata_10epoch_90val.tflite')
+mapTypePredictor = runModel('model.tflite')
 mapTypePredictor.imageSetup(ImageLoc)
 mapTypePredictor.runPrediction()
 
