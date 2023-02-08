@@ -54,7 +54,7 @@ class runModel():
         predictions_lite = classify_lite(rescaling_1_input=self.imgArray)['dense_1']
         score_lite = tf.nn.softmax(predictions_lite)
 
-        class_names = ['Subtomogram Averaging', 'Tomogram']
+        class_names = ['Non-Tomogram', 'Tomogram']
         print(
             "This map is likely a {} with a {:.2f} percent confidence."
             .format(class_names[np.argmax(score_lite)], 100 * np.max(score_lite))
