@@ -59,7 +59,7 @@ class runModel():
         signatures = interpreter.get_signature_list()
         print('Signature: {}'.format(signatures))
         classify_lite = interpreter.get_signature_runner('serving_default')
-        predictions_lite = classify_lite(rescaling_1_input=self.imgArray)['dense_1']
+        predictions_lite = classify_lite(rescaling_1_input=self.imgArray)['outputs']
         print(predictions_lite)
         score_lite = tf.nn.softmax(predictions_lite)
 
