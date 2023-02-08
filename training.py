@@ -31,7 +31,7 @@ dropout = 0.2
 #Generate training dataset
 train_ds = tf.keras.utils.image_dataset_from_directory(
   Directory,
-  validation_split=0.975,
+  validation_split=0.4,
   subset="training",
   seed=123,
   image_size=(img_height, img_width),
@@ -40,7 +40,7 @@ train_ds = tf.keras.utils.image_dataset_from_directory(
 #Generate val dataset
 val_ds = tf.keras.utils.image_dataset_from_directory(
   Directory,
-  validation_split=0.025,
+  validation_split=0.1,
   subset="validation",
   seed=123,
   image_size=(img_height, img_width),
@@ -108,7 +108,7 @@ model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-3),
 
 model.summary()
 #chose number of epochs
-epochs=10
+epochs=20
 
 #train and save as a history object for plotting.
 history = model.fit(
@@ -138,7 +138,7 @@ plt.plot(epochs_range, loss, label='Training Loss')
 plt.plot(epochs_range, val_loss, label='Validation Loss')
 plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
-figtitle='Training_summary_fullDataSet_ImgSize100_learningrate1e3_epoch10_dropout02_SGD.png'
+figtitle='Training_summary_fullDataSet_ImgSize100_learningrate1e3_epoch20_dropout02_SGD_halfds.png'
 plt.savefig('Outputs/{}'.format(figtitle))
 print(figtitle)
 
