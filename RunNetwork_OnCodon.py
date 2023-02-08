@@ -54,12 +54,12 @@ class runModel():
         predictions_lite = classify_lite(rescaling_1_input=self.imgArray)['dense_1']
         score_lite = tf.nn.softmax(predictions_lite)
 
-    #Import network
-    TF_MODEL_FILE_PATH = 'Training_summary_fullDataSet_ImgSize100_learningrate1e3_epoch75_wdienetwork2_NETWORK.tflite'
-    interpreter = tf.lite.Interpreter(model_path=TF_MODEL_FILE_PATH)
-    classify_lite = interpreter.get_signature_runner('serving_default')
-    predictions_lite = classify_lite(rescaling_1_input=img_array)['dense_1']
-    score_lite = tf.nn.softmax(predictions_lite)
+        #Import network
+        TF_MODEL_FILE_PATH = 'Training_summary_fullDataSet_ImgSize100_learningrate1e3_epoch75_wdienetwork2_NETWORK.tflite'
+        interpreter = tf.lite.Interpreter(model_path=TF_MODEL_FILE_PATH)
+        classify_lite = interpreter.get_signature_runner('serving_default')
+        predictions_lite = classify_lite(rescaling_1_input=img_array)['dense_1']
+        score_lite = tf.nn.softmax(predictions_lite)
 
         class_names = ['Subtomogram Averaging', 'Tomogram']
         print(
@@ -69,7 +69,6 @@ class runModel():
 
         data = pd.DataFrame({'Map': file, 'Expected Type': Folder, 'Predicted Type': class_names[np.argmax(score_lite)],
                              'Prediction score %': 100 * np.max(score_lite)}, index=[0])
-
         return data
 
 
