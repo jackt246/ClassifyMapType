@@ -84,8 +84,7 @@ ImageLoc = 'ImageToClassify.png'
 
 #Set up information on the data
 
-#mapTypePredictor = runModel('Training_summary_fullDataSet_ImgSize100_learningrate1e3_epoch75_wdienetwork2_NETWORK.tflite')
-mapTypePredictor = runModel('model.tflite')
+mapTypePredictor = runModel('model_SGD_subsetdata_10epoch_90val.tflite')
 mapTypePredictor.imageSetup(ImageLoc)
 mapTypePredictor.runPrediction()
 
