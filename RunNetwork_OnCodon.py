@@ -54,13 +54,6 @@ class runModel():
         predictions_lite = classify_lite(rescaling_1_input=self.imgArray)['dense_1']
         score_lite = tf.nn.softmax(predictions_lite)
 
-        #Import network
-        TF_MODEL_FILE_PATH = 'Training_summary_fullDataSet_ImgSize100_learningrate1e3_epoch75_wdienetwork2_NETWORK.tflite'
-        interpreter = tf.lite.Interpreter(model_path=TF_MODEL_FILE_PATH)
-        classify_lite = interpreter.get_signature_runner('serving_default')
-        predictions_lite = classify_lite(rescaling_1_input=img_array)['dense_1']
-        score_lite = tf.nn.softmax(predictions_lite)
-
         class_names = ['Subtomogram Averaging', 'Tomogram']
         print(
             "This map is likely a {} with a {:.2f} percent confidence."
@@ -72,7 +65,8 @@ class runModel():
         return data
 
 
-Folder = 'SubtomogramAverages'
+Class = 'NonTomograms'
+Folder = '../{}/'.format(Class)
 FilesList = os.listdir(Folder)
 
 Results = pd.DataFrame(columns=['Map', 'Expected Type', 'Predicted Type', 'Prediction score %'])
@@ -86,8 +80,8 @@ for file in FilesList:
     Z = MapEdit.CentSliceZ()
     # Projected = Projector(Map, 2)
 
-    plt.imsave('ImageToClassify_subtomo.png', Z, cmap='Greys')
-    ImageLoc = 'ImageToClassify_subtomo.png'
+    plt.imsave('ImageToClassify_{}.png'.format(Class), Z, cmap='Greys')
+    ImageLoc = 'ImageToClassify_{}.png'.format(Class)
 
     # Set up information on the data
 
@@ -97,5 +91,5 @@ for file in FilesList:
     Results = Results.append(data, ignore_index=True)
 
 print(Results)
-Results.to_csv('results_{}_subtomo.csv'.format(Folder))
+Results.to_csv('results_{}_{}.csv'.format(Folder, Class))
 
