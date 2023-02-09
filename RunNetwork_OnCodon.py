@@ -84,7 +84,7 @@ class runModel():
         return data
 
 
-Class = 'Tomograms'
+Class = 'NonTomograms'
 Folder = '../{}/'.format(Class)
 FilesList = os.listdir(Folder)
 
