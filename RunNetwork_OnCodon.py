@@ -38,30 +38,51 @@ class runModel():
     def __init__(self, modelPath):
         self.modelPath = modelPath
 
-    def imageSetup(self, imgLocation):
-        img_height = 100
-        img_width = 100
+    def emMapImport(self, mapPath):
+        self.mapArray = mrc.read(mapPath)
 
-        img = tf.keras.utils.load_img(
-            imgLocation, target_size=(img_height, img_width)
-        )
-        imgArray = tf.keras.utils.img_to_array(img)
-        self.imgArray = tf.expand_dims(imgArray, 0)  # Create a batch
+    def centSlicer(self):
+        array = self.mapArray
+        y, x, z = self.mapArray.shape
+
+        centZ = z // 2
+        centX = x // 2
+        centY = y // 2
+        #model takes an image of 100,100 so resize the central slices
+        self.centZSlice = np.resize((array[:, :, centZ]), (100,100))
+        self.centXSlice = np.resize((array[:, centX, :]), (100,100))
+        self.centYSlice = np.resize((array[centY, :, :]), (100,100))
+
+    def imageSetup(self):
+        # tensorflow is fussy and wants an RGB image. We have to trick it
+        # when using greyscale and just duplicate the data into a 3D array
+        centZSliceLarge = np.stack([self.centZSlice, self.centZSlice, self.centZSlice], axis=2)
+        centXSliceLarge = np.stack([self.centXSlice, self.centXSlice, self.centXSlice], axis=2)
+        centYSliceLarge = np.stack([self.centYSlice, self.centYSlice, self.centYSlice], axis=2)
+
+        #Make the array a tensor
+        self.imgArrayZ = tf.expand_dims(centZSliceLarge, 0)  # Create a batch
+        self.imgArrayX = tf.expand_dims(centXSliceLarge, 0)  # Create a batch
+        self.imgArrayY = tf.expand_dims(centYSliceLarge, 0)  # Create a batch
 
     def runPrediction(self):
         interpreter = tf.lite.Interpreter(model_path=self.modelPath)
         classify_lite = interpreter.get_signature_runner('serving_default')
-        predictions_lite = classify_lite(rescaling_1_input=self.imgArray)['dense_1']
-        score_lite = tf.nn.softmax(predictions_lite)
+
+        predictions_liteZ = classify_lite(rescaling_1_input=self.imgArrayZ)['dense_1']
+        #predictions_liteX = classify_lite(rescaling_1_input=self.imgArrayX)['dense_1']
+        #predictions_liteY = classify_lite(rescaling_1_input=self.imgArrayY)['dense_1']
+
+        score_liteZ = tf.nn.softmax(predictions_liteZ)
 
         class_names = ['Non-Tomogram', 'Tomogram']
         print(
             "This map is likely a {} with a {:.2f} percent confidence."
-            .format(class_names[np.argmax(score_lite)], 100 * np.max(score_lite))
+            .format(class_names[np.argmax(score_liteZ)], 100 * np.max(score_liteZ))
         )
 
-        data = pd.DataFrame({'Map': file, 'Expected Type': Folder, 'Predicted Type': class_names[np.argmax(score_lite)],
-                             'Prediction score %': 100 * np.max(score_lite)}, index=[0])
+        data = pd.DataFrame({'Map': file, 'Expected Type': Folder, 'Predicted Type': class_names[np.argmax(score_liteZ)],
+                             'Prediction score %': 100 * np.max(score_liteZ)}, index=[0])
         return data
 
 
@@ -76,19 +97,15 @@ Results = pd.DataFrame(columns=['Map', 'Expected Type', 'Predicted Type', 'Predi
 for file in FilesList:
     # Open and pre-process map
     MapLocation = '{}/{}'.format(Folder, file)
-    MapEdit = emMap(MapLocation)
-    Z = MapEdit.CentSliceZ()
-    # Projected = Projector(Map, 2)
 
-    plt.imsave('ImageToClassify_{}.png'.format(Class), Z, cmap='Greys')
-    ImageLoc = 'ImageToClassify_{}.png'.format(Class)
 
     # Set up information on the data
 
-    mapTypePredictor = runModel('model_resize.tflite')
-    mapTypePredictor.imageSetup(ImageLoc)
-    data = mapTypePredictor.runPrediction()
-    Results = pd.concat([Results, data], ignore_index=True)
+    Model = runModel('model_SGD_subsetdata_10epoch_90val.tflite', MapLocation)
+    Model = runModel('model_SGD_subsetdata_10epoch_90val.tflite', MapLocation)
+    Model.centSlicer()
+    Model.imageSetup()
+    Model.runPrediction()
 
 print(Results)
 Results.to_csv('results_{}.csv'.format(Class))
