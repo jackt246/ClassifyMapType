@@ -67,7 +67,7 @@ class runModel():
         interpreter = tf.lite.Interpreter(model_path=self.modelPath)
         classify_lite = interpreter.get_signature_runner('serving_default')
 
-        predictions_liteZ = classify_lite(rescaling_1_input=self.imgArrayZ)['dense_1']
+        predictions_liteZ = classify_lite(sequential_input=self.imgArrayZ)['dense_1']
         #predictions_liteX = classify_lite(rescaling_1_input=self.imgArrayX)['dense_1']
         #predictions_liteY = classify_lite(rescaling_1_input=self.imgArrayY)['dense_1']
 
