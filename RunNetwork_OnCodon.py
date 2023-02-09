@@ -35,10 +35,8 @@ class emMap():
         return self.array[midy, :, midz]
 
 class runModel():
-    def __init__(self, modelPath):
+    def __init__(self, modelPath, mapPath):
         self.modelPath = modelPath
-
-    def emMapImport(self, mapPath):
         self.mapArray = mrc.read(mapPath)
 
     def centSlicer(self):
@@ -105,7 +103,9 @@ for file in FilesList:
     Model = runModel('model_SGD_subsetdata_10epoch_90val.tflite', MapLocation)
     Model.centSlicer()
     Model.imageSetup()
-    Model.runPrediction()
+    data = Model.runPrediction()
+
+    Results = pd.concat([Results, data], ignore_index=True)
 
 print(Results)
 Results.to_csv('results_{}.csv'.format(Class))
