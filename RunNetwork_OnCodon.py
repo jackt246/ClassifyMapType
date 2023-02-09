@@ -59,7 +59,7 @@ class runModel():
         centYSliceLarge = np.stack([self.centYSlice, self.centYSlice, self.centYSlice], axis=2)
 
         #Make the array a tensor
-        self.imgArrayZ = tf.expand_dims(centZSliceLarge.astype(float), 0)  # Create a batch
+        self.imgArrayZ = tf.expand_dims(centZSliceLarge.astype(dtype='float32'), 0)  # Create a batch
         self.imgArrayX = tf.expand_dims(centXSliceLarge, 0)  # Create a batch
         self.imgArrayY = tf.expand_dims(centYSliceLarge, 0)  # Create a batch
 
