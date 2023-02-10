@@ -48,8 +48,8 @@ class runModel():
         centY = y // 2
         #model takes an image of 100,100 so resize the central slices
         self.centZSlice = np.resize((array[:, :, centZ]), (100,100))
-        self.centXSlice = np.resize((array[:, centX, :]), (100,100))
-        self.centYSlice = np.resize((array[centY, :, :]), (100,100))
+        #self.centXSlice = np.resize((array[:, centX, :]), (100,100))
+        #self.centYSlice = np.resize((array[centY, :, :]), (100,100))
 
     def imageSetup(self):
         # tensorflow is fussy and wants an RGB image. We have to trick it
@@ -60,8 +60,8 @@ class runModel():
 
         #Make the array a tensor
         self.imgArrayZ = tf.expand_dims(centZSliceLarge.astype(dtype='float32'), 0)  # Create a batch
-        self.imgArrayX = tf.expand_dims(centXSliceLarge, 0)  # Create a batch
-        self.imgArrayY = tf.expand_dims(centYSliceLarge, 0)  # Create a batch
+        #self.imgArrayX = tf.expand_dims(centXSliceLarge, 0)  # Create a batch
+        #self.imgArrayY = tf.expand_dims(centYSliceLarge, 0)  # Create a batch
 
     def runPrediction(self):
         interpreter = tf.lite.Interpreter(model_path=self.modelPath)
@@ -84,7 +84,7 @@ class runModel():
         return data
 
 
-Class = 'NonTomograms'
+Class = 'Tomograms'
 Folder = '../{}/'.format(Class)
 FilesList = os.listdir(Folder)
 
