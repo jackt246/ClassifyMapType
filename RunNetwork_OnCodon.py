@@ -55,8 +55,8 @@ class runModel():
         # tensorflow is fussy and wants an RGB image. We have to trick it
         # when using greyscale and just duplicate the data into a 3D array
         centZSliceLarge = np.stack([self.centZSlice, self.centZSlice, self.centZSlice], axis=2)
-        centXSliceLarge = np.stack([self.centXSlice, self.centXSlice, self.centXSlice], axis=2)
-        centYSliceLarge = np.stack([self.centYSlice, self.centYSlice, self.centYSlice], axis=2)
+        #centXSliceLarge = np.stack([self.centXSlice, self.centXSlice, self.centXSlice], axis=2)
+        #centYSliceLarge = np.stack([self.centYSlice, self.centYSlice, self.centYSlice], axis=2)
 
         #Make the array a tensor
         self.imgArrayZ = tf.expand_dims(centZSliceLarge.astype(dtype='float32'), 0)  # Create a batch
