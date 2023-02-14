@@ -26,7 +26,7 @@ Tomograms = '{}/Tomograms'.format(Directory)
 batch_size = 1
 img_height = 100
 img_width = 100
-dropout = 0.2
+dropout = 0
 
 #Generate training dataset
 train_ds = tf.keras.utils.image_dataset_from_directory(
@@ -102,7 +102,7 @@ model = Sequential([
   layers.Dense(num_classes, activation='softmax', name="outputs")
 ])
 
-model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-3),
+model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-4),
               loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
               metrics=['accuracy'])
 
@@ -138,7 +138,7 @@ plt.plot(epochs_range, loss, label='Training Loss')
 plt.plot(epochs_range, val_loss, label='Validation Loss')
 plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
-figtitle='Training_summary_fullDataSet_ImgSize100_learningrate1e3_epoch20_dropout02_SGD_halfds.png'
+figtitle='Training_summary_fullDataSet_ImgSize100_learningrate1e3_epoch20_dropout0_SGD_halfds.png'
 plt.savefig('Outputs/{}'.format(figtitle))
 print(figtitle)
 
@@ -151,5 +151,5 @@ df = pd.DataFrame(list(zip(acc, val_acc, loss, val_loss)), columns=['Accuracy', 
 df.to_csv('Outputs/{}.csv'.format(figtitle.strip('.png')))
 
 # Save the model.
-with open('model_withIPET.tflite', 'wb') as f:
+with open('model_Training_summary_fullDataSet_ImgSize100_learningrate1e4_epoch20_dropout0_SGD_halfds.tflite', 'wb') as f:
   f.write(tflite_model)
