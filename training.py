@@ -138,7 +138,7 @@ plt.plot(epochs_range, loss, label='Training Loss')
 plt.plot(epochs_range, val_loss, label='Validation Loss')
 plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
-figtitle='Training_summary_fullDataSet_ImgSize100_learningrate1e3_epoch5_dropout0_SGD_20percent.png'
+figtitle='Training_summary_fullDataSet_ImgSize100_learningrate1e3_epoch5_dropout0_SGD_20percent_noaug.png'
 plt.savefig('Outputs/{}'.format(figtitle))
 print(figtitle)
 
@@ -151,5 +151,5 @@ df = pd.DataFrame(list(zip(acc, val_acc, loss, val_loss)), columns=['Accuracy', 
 df.to_csv('Outputs/{}.csv'.format(figtitle.strip('.png')))
 
 # Save the model.
-with open('model_Training_summary_fullDataSet_ImgSize100_learningrate1e4_epoch5_dropout0_SGD_20percent.tflite', 'wb') as f:
+with open('model_Training_summary_fullDataSet_ImgSize100_learningrate1e4_epoch5_dropout0_SGD_20percent_noaug.tflite', 'wb') as f:
   f.write(tflite_model)
