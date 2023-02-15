@@ -108,7 +108,7 @@ model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-4),
 
 model.summary()
 #chose number of epochs
-epochs=20
+epochs=5
 
 #train and save as a history object for plotting.
 history = model.fit(
@@ -138,7 +138,7 @@ plt.plot(epochs_range, loss, label='Training Loss')
 plt.plot(epochs_range, val_loss, label='Validation Loss')
 plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
-figtitle='Training_summary_fullDataSet_ImgSize100_learningrate1e3_epoch20_dropout0_SGD_20percent.png'
+figtitle='Training_summary_fullDataSet_ImgSize100_learningrate1e3_epoch5_dropout0_SGD_20percent.png'
 plt.savefig('Outputs/{}'.format(figtitle))
 print(figtitle)
 
@@ -151,5 +151,5 @@ df = pd.DataFrame(list(zip(acc, val_acc, loss, val_loss)), columns=['Accuracy', 
 df.to_csv('Outputs/{}.csv'.format(figtitle.strip('.png')))
 
 # Save the model.
-with open('model_Training_summary_fullDataSet_ImgSize100_learningrate1e4_epoch20_dropout0_SGD_20percent.tflite', 'wb') as f:
+with open('model_Training_summary_fullDataSet_ImgSize100_learningrate1e4_epoch5_dropout0_SGD_20percent.tflite', 'wb') as f:
   f.write(tflite_model)
