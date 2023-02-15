@@ -31,7 +31,7 @@ dropout = 0
 #Generate training dataset
 train_ds = tf.keras.utils.image_dataset_from_directory(
   Directory,
-  validation_split=0.4,
+  validation_split=0.2,
   subset="training",
   seed=123,
   image_size=(img_height, img_width),
@@ -40,7 +40,7 @@ train_ds = tf.keras.utils.image_dataset_from_directory(
 #Generate val dataset
 val_ds = tf.keras.utils.image_dataset_from_directory(
   Directory,
-  validation_split=0.1,
+  validation_split=0.05,
   subset="validation",
   seed=123,
   image_size=(img_height, img_width),
@@ -138,7 +138,7 @@ plt.plot(epochs_range, loss, label='Training Loss')
 plt.plot(epochs_range, val_loss, label='Validation Loss')
 plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
-figtitle='Training_summary_fullDataSet_ImgSize100_learningrate1e3_epoch20_dropout0_SGD_halfds.png'
+figtitle='Training_summary_fullDataSet_ImgSize100_learningrate1e3_epoch20_dropout0_SGD_20percent.png'
 plt.savefig('Outputs/{}'.format(figtitle))
 print(figtitle)
 
@@ -151,5 +151,5 @@ df = pd.DataFrame(list(zip(acc, val_acc, loss, val_loss)), columns=['Accuracy', 
 df.to_csv('Outputs/{}.csv'.format(figtitle.strip('.png')))
 
 # Save the model.
-with open('model_Training_summary_fullDataSet_ImgSize100_learningrate1e4_epoch20_dropout0_SGD_halfds.tflite', 'wb') as f:
+with open('model_Training_summary_fullDataSet_ImgSize100_learningrate1e4_epoch20_dropout0_SGD_20percent.tflite', 'wb') as f:
   f.write(tflite_model)
