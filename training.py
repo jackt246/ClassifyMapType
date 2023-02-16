@@ -13,8 +13,6 @@ from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
 import pandas as pd
 
-
-
 #Data directories
 
 Directory = 'Classes/'
@@ -40,7 +38,7 @@ train_ds = tf.keras.utils.image_dataset_from_directory(
 #Generate val dataset
 val_ds = tf.keras.utils.image_dataset_from_directory(
   Directory,
-  validation_split=0.05,
+  validation_split=0.2,
   subset="validation",
   seed=123,
   image_size=(img_height, img_width),
@@ -86,19 +84,19 @@ data_augmentation = keras.Sequential(
 
 #Define the model
 model = Sequential([
-  layers.Rescaling(1./255),
+  layers.Rescaling(1./255, input_shape=(img_height, img_width, 3)),
   layers.Conv2D(16, 3, padding='same', activation='relu'),
   layers.MaxPooling2D(),
+  layers.Dropout(dropout),
   layers.Conv2D(32, 3, padding='same', activation='relu'),
   layers.MaxPooling2D(),
   layers.Conv2D(64, 3, padding='same', activation='relu'),
   layers.MaxPooling2D(),
   layers.Conv2D(128, 3, padding='same', activation='relu'),
-  layers.Dropout(dropout),
   layers.MaxPooling2D(),
   layers.Flatten(),
   layers.Dense(256, activation='relu'),
-  layers.Dense(num_classes, activation='softmax', name="outputs")
+  layers.Dense(num_classes, name="outputs")
 ])
 
 model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-4),
@@ -137,7 +135,7 @@ plt.plot(epochs_range, loss, label='Training Loss')
 plt.plot(epochs_range, val_loss, label='Validation Loss')
 plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
-figtitle='Training_summary_fullDataSet_ImgSize100_learningrate1e3_epoch5_dropout0_SGD_20percent_noaug.png'
+figtitle='Training_summary_ImgSize100_learningrate1e4_epoch5_SGD_noaug_dropout0.png'
 plt.savefig('Outputs/{}'.format(figtitle))
 print(figtitle)
 
@@ -150,5 +148,5 @@ df = pd.DataFrame(list(zip(acc, val_acc, loss, val_loss)), columns=['Accuracy', 
 df.to_csv('Outputs/{}.csv'.format(figtitle.strip('.png')))
 
 # Save the model.
-with open('model_Training_summary_fullDataSet_ImgSize100_learningrate1e4_epoch5_dropout0_SGD_20percent_noaug.tflite', 'wb') as f:
+with open('Training_summary_ImgSize100_learningrate1e4_epoch5_SGD_noaug_dropout0', 'wb') as f:
   f.write(tflite_model)
