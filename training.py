@@ -31,7 +31,7 @@ dropout = 0
 #Generate training dataset
 train_ds = tf.keras.utils.image_dataset_from_directory(
   Directory,
-  validation_split=0.2,
+  validation_split=0.8,
   subset="training",
   seed=123,
   image_size=(img_height, img_width),
