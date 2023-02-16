@@ -86,7 +86,6 @@ data_augmentation = keras.Sequential(
 
 #Define the model
 model = Sequential([
-  #data_augmentation,
   layers.Rescaling(1./255),
   layers.Conv2D(16, 3, padding='same', activation='relu'),
   layers.MaxPooling2D(),
