@@ -29,7 +29,7 @@ dropout = 0
 #Generate training dataset
 train_ds = tf.keras.utils.image_dataset_from_directory(
   Directory,
-  validation_split=0.8,
+  validation_split=0.6,
   subset="training",
   seed=123,
   image_size=(img_height, img_width),
@@ -105,7 +105,7 @@ model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-4),
 
 model.summary()
 #chose number of epochs
-epochs=5
+epochs=10
 
 #train and save as a history object for plotting.
 history = model.fit(
@@ -135,7 +135,7 @@ plt.plot(epochs_range, loss, label='Training Loss')
 plt.plot(epochs_range, val_loss, label='Validation Loss')
 plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
-figtitle='Training_summary_ImgSize100_learningrate1e4_epoch5_SGD_noaug_dropout0.png'
+figtitle='Training_summary_ImgSize100_learningrate1e4_epoch10_SGD_noaug_dropout0_04dataset_02val.png'
 plt.savefig('Outputs/{}'.format(figtitle))
 print(figtitle)
 
@@ -148,5 +148,5 @@ df = pd.DataFrame(list(zip(acc, val_acc, loss, val_loss)), columns=['Accuracy', 
 df.to_csv('Outputs/{}.csv'.format(figtitle.strip('.png')))
 
 # Save the model.
-with open('Training_summary_ImgSize100_learningrate1e4_epoch5_SGD_noaug_dropout0', 'wb') as f:
+with open('Training_summary_ImgSize100_learningrate1e4_epoch5_SGD_noaug_dropout0.tflite', 'wb') as f:
   f.write(tflite_model)
