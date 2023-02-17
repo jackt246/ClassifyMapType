@@ -65,9 +65,13 @@ class runModel():
 
     def runPrediction(self):
         interpreter = tf.lite.Interpreter(model_path=self.modelPath)
-        classify_lite = interpreter.get_signature_runner('serving_default')
+        #Tensorflow has a habit of changing the signatures so this is run to tell me what it is
+        signatures = interpreter.get_signature_list()
+        print('Signature: {}'.format(signatures))
 
+        classify_lite = interpreter.get_signature_runner('serving_default')
         predictions_liteZ = classify_lite(sequential_input=self.imgArrayZ)['outputs']
+
         #predictions_liteX = classify_lite(rescaling_1_input=self.imgArrayX)['dense_1']
         #predictions_liteY = classify_lite(rescaling_1_input=self.imgArrayY)['dense_1']
 
