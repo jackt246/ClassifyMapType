@@ -29,7 +29,7 @@ dropout = 0
 #Generate training dataset
 train_ds = tf.keras.utils.image_dataset_from_directory(
   Directory,
-  validation_split=0.6,
+  validation_split=0.8,
   subset="training",
   seed=123,
   image_size=(img_height, img_width),
@@ -94,8 +94,12 @@ model = Sequential([
   layers.MaxPooling2D(),
   layers.Conv2D(128, 3, padding='same', activation='relu'),
   layers.MaxPooling2D(),
+  layers.Conv2D(256, 3, padding='same', activation='relu'),
+  layers.MaxPooling2D(),
+  layers.Conv2D(512, 3, padding='same', activation='relu'),
+  layers.MaxPooling2D(),
   layers.Flatten(),
-  layers.Dense(256, activation='relu'),
+  layers.Dense(1024, activation='relu'),
   layers.Dense(num_classes, name="outputs")
 ])
 
@@ -135,7 +139,7 @@ plt.plot(epochs_range, loss, label='Training Loss')
 plt.plot(epochs_range, val_loss, label='Validation Loss')
 plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
-figtitle='Training_summary_ImgSize100_learningrate1e4_epoch10_SGD_noaug_dropout0_04dataset_02val.png'
+figtitle='Training_summary_ImgSize100_learningrate1e4_epoch10_SGD_noaug_dropout0_02dataset_02val_DEEP.png'
 plt.savefig('Outputs/{}'.format(figtitle))
 print(figtitle)
 
@@ -148,5 +152,5 @@ df = pd.DataFrame(list(zip(acc, val_acc, loss, val_loss)), columns=['Accuracy', 
 df.to_csv('Outputs/{}.csv'.format(figtitle.strip('.png')))
 
 # Save the model.
-with open('Training_summary_ImgSize100_learningrate1e4_epoch10_SGD_noaug_dropout0_04dataset_02val.tflite', 'wb') as f:
+with open('Training_summary_ImgSize100_learningrate1e4_epoch10_SGD_noaug_dropout0_02dataset_02val_DEEP.tflite', 'wb') as f:
   f.write(tflite_model)
