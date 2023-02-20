@@ -11,5 +11,5 @@ INPUT=$(cat $FILE)
 
 for file in $INPUT
 do
-rm /nfs/production/gerard/emdb/archive/staging/structures/$file/map/${file}.map.gz
+rm /hps/nobackup/gerard/emdb/TomogramCheck/Tomograms/$file/map/${file}.map.gz
 done
