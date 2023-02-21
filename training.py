@@ -15,7 +15,7 @@ import pandas as pd
 
 #Data directories
 
-Directory = 'Classes/'
+Directory = 'Classes200/'
 SubTomo = '{}/NonTomograms'.format(Directory)
 Tomograms = '{}/Tomograms'.format(Directory)
 
@@ -29,7 +29,7 @@ dropout = 0
 #Generate training dataset
 train_ds = tf.keras.utils.image_dataset_from_directory(
   Directory,
-  validation_split=0.2,
+  validation_split=0.9,
   subset="training",
   seed=123,
   image_size=(img_height, img_width),
@@ -38,7 +38,7 @@ train_ds = tf.keras.utils.image_dataset_from_directory(
 #Generate val dataset
 val_ds = tf.keras.utils.image_dataset_from_directory(
   Directory,
-  validation_split=0.2,
+  validation_split=0.1,
   subset="validation",
   seed=123,
   image_size=(img_height, img_width),
@@ -135,7 +135,7 @@ plt.plot(epochs_range, loss, label='Training Loss')
 plt.plot(epochs_range, val_loss, label='Validation Loss')
 plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
-figtitle='Training_summary_ImgSize100_learningrate1e4_epoch5_SGD_noaug_dropout0_fullds_02val.png'
+figtitle='Training_summary_ImgSize200_learningrate1e4_epoch5_SGD_noaug_dropout0_01ds_01val.png'
 plt.savefig('Outputs/{}'.format(figtitle))
 print(figtitle)
 
@@ -148,5 +148,5 @@ df = pd.DataFrame(list(zip(acc, val_acc, loss, val_loss)), columns=['Accuracy', 
 df.to_csv('Outputs/{}.csv'.format(figtitle.strip('.png')))
 
 # Save the model.
-with open('Training_summary_ImgSize100_learningrate1e4_epoch5_SGD_noaug_dropout0_fullds_02val', 'wb') as f:
+with open('Training_summary_ImgSize200_learningrate1e4_epoch5_SGD_noaug_dropout0_01ds_01val', 'wb') as f:
   f.write(tflite_model)
