@@ -103,7 +103,7 @@ for file in FilesList:
 
     # Set up information on the data
 
-    Model = runModel('Training_summary_ImgSize100_learningrate1e4_epoch10_SGD_noaug_dropout0_02dataset_02val_DEEP.tflite', MapLocation)
+    Model = runModel('Training_summary_ImgSize200_learningrate1e4_epoch5_SGD_noaug_dropout0_01ds_01val.tflite', MapLocation)
     Model.centSlicer()
     Model.imageSetup()
     data = Model.runPrediction()
@@ -111,5 +111,5 @@ for file in FilesList:
     Results = pd.concat([Results, data], ignore_index=True)
 
 print(Results)
-Results.to_csv('results_{}_20022023_DEEP.csv'.format(Class))
+Results.to_csv('results_{}_22022023_img200.csv'.format(Class))
 
