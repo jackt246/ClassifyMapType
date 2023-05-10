@@ -55,10 +55,10 @@ def PrepFiles(DirectoryName, OutputDir):
 
 
 
-DirectoryName = ('Tomograms')
-OutputDir = ('Classes')
-#DirectoryName2 = ('/hps/nobackup/gerard/emdb/TomogramCheck/NonTomograms')
-#OutputDir2 = ('Classes200/NonTomograms')
+DirectoryName = ('/hps/nobackup/gerard/emdb/TomogramCheck/NonTomograms')
+OutputDir = ('Classes3D/NonTomograms')
+DirectoryName2 = ('/hps/nobackup/gerard/emdb/TomogramCheck/Tomograms')
+OutputDir2 = ('Classes3D/Tomograms')
 
 PrepFiles(DirectoryName, OutputDir)
-#PrepMapsResize(DirectoryName2, OutputDir2)
+PrepFiles(DirectoryName2, OutputDir2)
