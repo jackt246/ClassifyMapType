@@ -57,7 +57,7 @@ for subdir in os.listdir(train_dir):
         for filename in os.listdir(os.path.join(train_dir, subdir)):
             filepath = os.path.join(train_dir, subdir, filename)
             with mrcfile.open(filepath) as mrc:
-                volume = mrc.data.astype(np.float32)
+                volume = mrc.data.astype(np.int32)
             train_data.append(volume)
             train_labels.append(class_idx)
 
@@ -70,7 +70,7 @@ for subdir in os.listdir(val_dir):
         for filename in os.listdir(os.path.join(val_dir, subdir)):
             filepath = os.path.join(val_dir, subdir, filename)
             with mrcfile.open(filepath) as mrc:
-                volume = mrc.data.astype(np.float32)
+                volume = mrc.data.astype(np.int32)
             val_data.append(volume)
             val_labels.append(class_idx)
 
