@@ -29,7 +29,7 @@ train_datagen = ImageDataGenerator(rescale=1./255)
 val_datagen = ImageDataGenerator(rescale=1./255)
 
 # Define batch size and input shape
-batch_size = 32
+batch_size = 1
 input_shape = (None, None, None, 1)
 
 # Define train and validation data generators
