@@ -14,13 +14,12 @@ from tensorflow.keras.models import Sequential
 import pandas as pd
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import mrcfile
-from scipy.ndimage.interpolation import zoom
 
 #Load data
 
 # Define data directories
-train_dir = 'Classes/Train/'
-val_dir = 'Classes/Validation/'
+train_dir = 'Classes3D/Train/'
+val_dir = 'Classes3D/Validation/'
 
 # Define mapping from class names to class indices
 class_map = {'Tomogram': 0, 'NonTomogram': 1}
@@ -59,7 +58,6 @@ for subdir in os.listdir(train_dir):
             filepath = os.path.join(train_dir, subdir, filename)
             with mrcfile.open(filepath) as mrc:
                 volume = mrc.data.astype(np.float32)
-                volume = np.resize(volume, (64, 64, 64))
             train_data.append(volume)
             train_labels.append(class_idx)
 
@@ -73,7 +71,6 @@ for subdir in os.listdir(val_dir):
             filepath = os.path.join(val_dir, subdir, filename)
             with mrcfile.open(filepath) as mrc:
                 volume = mrc.data.astype(np.float32)
-                volume = np.resize(volume, (64, 64, 64))
             val_data.append(volume)
             val_labels.append(class_idx)
 
@@ -86,7 +83,7 @@ val_data = np.array(val_data)
 val_labels = np.array(val_labels)
 
 # Define input shape
-input_shape = (64, 64, 64, 1)
+input_shape = (200, 200, 200, 1)
 
 #Define the model
 model = Sequential([
