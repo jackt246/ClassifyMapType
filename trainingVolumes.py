@@ -22,7 +22,7 @@ train_dir = 'Classes3D/Train/'
 val_dir = 'Classes3D/Validation/'
 
 # Define mapping from class names to class indices
-class_map = {'Tomogram': 0, 'NonTomograms': 1}
+class_map = {'Tomograms': 0, 'NonTomograms': 1}
 
 # Define data generators for training and validation sets
 train_datagen = ImageDataGenerator(rescale=1./255)
