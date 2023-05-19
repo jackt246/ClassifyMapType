@@ -138,5 +138,5 @@ plt.xlabel('Epoch')
 plt.ylabel('Loss')
 plt.legend(['Train', 'Validation'], loc='upper right')
 
-plt.tight_layout()
-plt.show()
+figtitle = '3Dclassification.png'
+plt.savefig('Outputs/{}'.format(figtitle))
