@@ -15,72 +15,67 @@ import pandas as pd
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import mrcfile
 
-#Load data
+
+
+
+#Load data function to be used by tf later on
+def load_data(filepath_tensor, label):
+
+    filepath = filepath_tensor.numpy().decode('utf-8')
+    with mrcfile.open(filepath) as mrc:
+        data = mrc.data
+    return data, label
 
 # Define data directories
 train_dir = 'Classes3D/Train/'
 val_dir = 'Classes3D/Validation/'
 
+#create empty lists for filepaths and labels
+train_filepaths = []
+train_labels = []
+val_filepaths = []
+val_labels = []
+
 # Define mapping from class names to class indices
 class_map = {'Tomograms': 0, 'NonTomograms': 1}
 
-# Define data generators for training and validation sets
-train_datagen = ImageDataGenerator(rescale=1./255)
-val_datagen = ImageDataGenerator(rescale=1./255)
+trainClassFolders = [folder for folder in os.listdir(train_dir) if folder != ".DS_Store"]
+valClassFolders = [folder for folder in os.listdir(val_dir) if folder != ".DS_Store"]
 
-# Define batch size and input shape
-batch_size = 1
-input_shape = (None, None, None, 1)
+for class_folder in trainClassFolders:
+    class_path = os.path.join(train_dir, class_folder)
+    if os.path.isdir(class_path):
+        file_names = os.listdir(class_path)
 
-# Define train and validation data generators
-train_generator = train_datagen.flow_from_directory(
-    train_dir,
-    target_size=input_shape[:3],
-    batch_size=batch_size,
-    color_mode='grayscale',
-    class_mode='binary')
+        # Iterate over the files in the class folder
+        for file_name in file_names:
+            file_path = os.path.join(class_path, file_name)
+            train_filepaths.append(file_path)
+            train_labels.append(class_map[class_folder])  # Assuming class folder name represents the label
+    else:
+        print(f"Warning: Directory '{class_path}' doesn't exist or is not a directory.")
 
-val_generator = val_datagen.flow_from_directory(
-    val_dir,
-    target_size=input_shape[:3],
-    batch_size=batch_size,
-    color_mode='grayscale',
-    class_mode='binary')
+for class_folder in valClassFolders:
+    class_path = os.path.join(val_dir, class_folder)
+    if os.path.isdir(class_path):
+        file_names = os.listdir(class_path)
 
-# Read MRC files into numpy arrays
-train_data = []
-train_labels = []
-for subdir in os.listdir(train_dir):
-    if os.path.isdir(os.path.join(train_dir, subdir)):
-        class_name = subdir.split('/')[-1]
-        class_idx = class_map[class_name]
-        for filename in os.listdir(os.path.join(train_dir, subdir)):
-            filepath = os.path.join(train_dir, subdir, filename)
-            with mrcfile.open(filepath) as mrc:
-                volume = mrc.data.astype(np.int32)
-            train_data.append(volume)
-            train_labels.append(class_idx)
+        # Iterate over the files in the class folder
+        for file_name in file_names:
+            file_path = os.path.join(class_path, file_name)
+            val_filepaths.append(file_path)
+            val_labels.append(class_map[class_folder])  # Assuming class folder name represents the label
+    else:
+        print(f"Warning: Directory '{class_path}' doesn't exist or is not a directory.")
 
-val_data = []
-val_labels = []
-for subdir in os.listdir(val_dir):
-    if os.path.isdir(os.path.join(val_dir, subdir)):
-        class_name = subdir.split('/')[-1]
-        class_idx = class_map[class_name]
-        for filename in os.listdir(os.path.join(val_dir, subdir)):
-            filepath = os.path.join(val_dir, subdir, filename)
-            with mrcfile.open(filepath) as mrc:
-                volume = mrc.data.astype(np.int32)
-            val_data.append(volume)
-            val_labels.append(class_idx)
 
-print('data loaded')
 
-# Convert data to numpy arrays
-train_data = np.array(train_data)
-train_labels = np.array(train_labels)
-val_data = np.array(val_data)
-val_labels = np.array(val_labels)
+print('making datasets')
+datasetTraining = tf.data.Dataset.from_tensor_slices((train_filepaths, train_labels))
+datasetTraining = datasetTraining.map(lambda x, y: tf.py_function(load_data, [x, y], [tf.float32, y.dtype]), num_parallel_calls=tf.data.AUTOTUNE)
+
+datasetValidation = tf.data.Dataset.from_tensor_slices((val_filepaths, val_labels))
+datasetValidation = datasetValidation.map(lambda x, y: tf.py_function(load_data, [x, y], [tf.float32, y.dtype]), num_parallel_calls=tf.data.AUTOTUNE)
 
 # Define input shape
 input_shape = (200, 200, 200, 1)
@@ -103,43 +98,45 @@ model.compile(loss='sparse_categorical_crossentropy',
               metrics=['accuracy'], run_eagerly=True)
 
 model.summary()
-epochs = 25
-#train and save as a history object for plotting.
-history = model.fit(train_data, train_labels, epochs=epochs, validation_data=(val_data, val_labels))
 
-#Plot a bunch of stats
-acc = history.history['accuracy']
-val_acc = history.history['val_accuracy']
+#Define running conditions
 
-loss = history.history['loss']
-val_loss = history.history['val_loss']
+batch_size = 1
+epochs = 5
+steps_per_epoch = len(train_filepaths) // batch_size
+validation_steps = len(val_filepaths) // batch_size
 
-epochs_range = range(epochs)
+# Configure the training and validation datasets
+datasetTraining = datasetTraining.shuffle(len(train_filepaths)).repeat().batch(batch_size)
+datasetValidation = datasetValidation.batch(batch_size)
 
-plt.figure(figsize=(8, 8))
+# Train the model
+history = model.fit(
+    datasetTraining,
+    steps_per_epoch=steps_per_epoch,
+    epochs=epochs,
+    validation_data=datasetValidation,
+    validation_steps=validation_steps
+)
+
+# Plot accuracy and loss curves
+plt.figure(figsize=(12, 4))
+
 plt.subplot(1, 2, 1)
-plt.plot(epochs_range, acc, label='Training Accuracy')
-plt.plot(epochs_range, val_acc, label='Validation Accuracy')
-plt.legend(loc='lower right')
-plt.title('Training and Validation Accuracy')
+plt.plot(history.history['accuracy'])
+plt.plot(history.history['val_accuracy'])
+plt.title('Model Accuracy')
+plt.xlabel('Epoch')
+plt.ylabel('Accuracy')
+plt.legend(['Train', 'Validation'], loc='lower right')
 
 plt.subplot(1, 2, 2)
-plt.plot(epochs_range, loss, label='Training Loss')
-plt.plot(epochs_range, val_loss, label='Validation Loss')
-plt.legend(loc='upper right')
-plt.title('Training and Validation Loss')
-figtitle='Training_summary_3D.png'
-plt.savefig('Outputs/{}'.format(figtitle))
-print(figtitle)
+plt.plot(history.history['loss'])
+plt.plot(history.history['val_loss'])
+plt.title('Model Loss')
+plt.xlabel('Epoch')
+plt.ylabel('Loss')
+plt.legend(['Train', 'Validation'], loc='upper right')
 
-# Convert the model to a tf lite model
-converter = tf.lite.TFLiteConverter.from_keras_model(model)
-tflite_model = converter.convert()
-
-#Output the graph values
-df = pd.DataFrame(list(zip(acc, val_acc, loss, val_loss)), columns=['Accuracy', 'Val_Accuracy', 'Loss', 'Val_Loss'])
-df.to_csv('Outputs/{}.csv'.format(figtitle.strip('.png')))
-
-# Save the model.
-#with open('Training_summary_ImgSize200_learningrate1e4_epoch5_SGD_noaug_dropout0_01ds_01val.tflite', 'wb') as f:
-#  f.write(tflite_model)
+plt.tight_layout()
+plt.show()
