@@ -94,7 +94,7 @@ model = Sequential([
 ])
 
 model.compile(loss='sparse_categorical_crossentropy',
-              optimizer=tf.keras.optimizers.Adam(),
+              optimizer=tf.keras.optimizers.Adam(learning_rate=1e-4),
               metrics=['accuracy'], run_eagerly=True)
 
 model.summary()
@@ -138,5 +138,5 @@ plt.xlabel('Epoch')
 plt.ylabel('Loss')
 plt.legend(['Train', 'Validation'], loc='upper right')
 
-figtitle = '3Dclassification.png'
+figtitle = '3Dclassification_1e-4.png'
 plt.savefig('Outputs/{}'.format(figtitle))
