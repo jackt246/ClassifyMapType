@@ -102,7 +102,7 @@ model.summary()
 #Define running conditions
 
 batch_size = 1
-epochs = 5
+epochs = 10
 steps_per_epoch = len(train_filepaths) // batch_size
 validation_steps = len(val_filepaths) // batch_size
 
@@ -140,3 +140,14 @@ plt.legend(['Train', 'Validation'], loc='upper right')
 
 figtitle = '3Dclassification_1e-4.png'
 plt.savefig('Outputs/{}'.format(figtitle))
+
+converter = tf.lite.TFLiteConverter.from_keras_model(model)
+tflite_model = converter.convert()
+
+#Output the graph values
+df = pd.DataFrame(list(zip(history.history['accuracy'], history.history['val_accuracy'], history.history['loss'], history.history['val_loss'])), columns=['Accuracy', 'Val_Accuracy', 'Loss', 'Val_Loss'])
+df.to_csv('Outputs/{}.csv'.format(figtitle.strip('.png')))
+
+# Save the model.
+with open('Model_3D_1e-4.tflite', 'wb') as f:
+  f.write(tflite_model)
