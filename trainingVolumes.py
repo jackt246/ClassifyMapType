@@ -18,7 +18,7 @@ import mrcfile
 
 
 
-#Load data function to be used by tf later on
+# Load data function to be used by tf later on
 def load_data(filepath_tensor, label):
 
     filepath = filepath_tensor.numpy().decode('utf-8')
@@ -29,6 +29,23 @@ def load_data(filepath_tensor, label):
 # Define data directories
 train_dir = 'Classes3D/Train/'
 val_dir = 'Classes3D/Validation/'
+
+#_________ Define some variables that will be used for running _________#
+
+batch_size = 1
+epochs = 10
+trainingRate = 1e-5
+dropout = 0.2
+
+# Filname of figure with accuracy and loss info
+
+figtitle = '3Dclassification_1e-5_epoch10.png'
+
+# Filename for output model so we can reuse it if it is any good
+
+modelFileName = 'Model_3D_1e-5.tflite'
+
+#____________________________________________________________________#
 
 #create empty lists for filepaths and labels
 train_filepaths = []
@@ -84,6 +101,7 @@ input_shape = (200, 200, 200, 1)
 model = Sequential([
     layers.Conv3D(32, (3, 3, 3), activation='relu', input_shape=input_shape),
     layers.MaxPooling3D((2, 2, 2)),
+    layers.dropout(dropout),
     layers.Conv3D(64, (3, 3, 3), activation='relu'),
     layers.MaxPooling3D((2, 2, 2)),
     layers.Conv3D(128, (3, 3, 3), activation='relu'),
@@ -94,15 +112,11 @@ model = Sequential([
 ])
 
 model.compile(loss='sparse_categorical_crossentropy',
-              optimizer=tf.keras.optimizers.Adam(learning_rate=1e-5),
+              optimizer=tf.keras.optimizers.Adam(learning_rate=trainingRate),
               metrics=['accuracy'], run_eagerly=True)
 
 model.summary()
 
-#Define running conditions
-
-batch_size = 1
-epochs = 10
 steps_per_epoch = len(train_filepaths) // batch_size
 validation_steps = len(val_filepaths) // batch_size
 
@@ -149,5 +163,5 @@ df = pd.DataFrame(list(zip(history.history['accuracy'], history.history['val_acc
 df.to_csv('Outputs/{}.csv'.format(figtitle.strip('.png')))
 
 # Save the model.
-with open('Model_3D_1e-5.tflite', 'wb') as f:
+with open(modelFileName, 'wb') as f:
   f.write(tflite_model)
