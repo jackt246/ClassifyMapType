@@ -94,7 +94,7 @@ model = Sequential([
 ])
 
 model.compile(loss='sparse_categorical_crossentropy',
-              optimizer=tf.keras.optimizers.Adam(learning_rate=1e-4),
+              optimizer=tf.keras.optimizers.Adam(learning_rate=1e-5),
               metrics=['accuracy'], run_eagerly=True)
 
 model.summary()
@@ -138,7 +138,7 @@ plt.xlabel('Epoch')
 plt.ylabel('Loss')
 plt.legend(['Train', 'Validation'], loc='upper right')
 
-figtitle = '3Dclassification_1e-4.png'
+figtitle = '3Dclassification_1e-5_epoch10.png'
 plt.savefig('Outputs/{}'.format(figtitle))
 
 converter = tf.lite.TFLiteConverter.from_keras_model(model)
@@ -149,5 +149,5 @@ df = pd.DataFrame(list(zip(history.history['accuracy'], history.history['val_acc
 df.to_csv('Outputs/{}.csv'.format(figtitle.strip('.png')))
 
 # Save the model.
-with open('Model_3D_1e-4.tflite', 'wb') as f:
+with open('Model_3D_1e-5.tflite', 'wb') as f:
   f.write(tflite_model)
