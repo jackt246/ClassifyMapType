@@ -39,11 +39,11 @@ dropout = 0.2
 
 # Filname of figure with accuracy and loss info
 
-figtitle = '3Dclassification_1e-5_epoch10.png'
+figtitle = '3Dclassification_1e-5_epoch10_dropout02.png'
 
 # Filename for output model so we can reuse it if it is any good
 
-modelFileName = 'Model_3D_1e-5.tflite'
+modelFileName = 'Model_3D_1e-5_dropout02.tflite'
 
 #____________________________________________________________________#
 
