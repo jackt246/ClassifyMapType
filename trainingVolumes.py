@@ -34,13 +34,13 @@ val_dir = 'Classes3D/Validation/'
 #_________ Define some variables that will be used for running _________#
 
 batch_size = 1
-epochs = 5
+epochs = 1
 trainingRate = 1e-5
 dropout = 0.2
 
 # Filname of figure with accuracy and loss info
 
-figtitle = '3Dclassification_1e-5_epoch5_dropout02.png'
+figtitle = '3Dclassification_1e-5_epoch1_dropout02.png'
 
 # Filename for output model so we can reuse it if it is any good
 
