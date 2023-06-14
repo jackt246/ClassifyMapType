@@ -14,6 +14,7 @@ from tensorflow.keras.models import Sequential
 import pandas as pd
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import mrcfile
+from sklearn.metrics import precision_recall_curve
 
 
 
@@ -133,6 +134,19 @@ history = model.fit(
     validation_steps=validation_steps
 )
 
+# Get the model's predictions
+y_pred = model.predict(x_test)
+
+# Calculate the precision and recall scores
+precision, recall, thresholds = precision_recall_curve(y_test, y_pred)
+
+# Plot the precision and recall curve
+plt.plot(recall, precision, label='Precision-Recall Curve')
+plt.xlabel('Recall')
+plt.ylabel('Precision')
+plt.legend()
+plt.savefig('Outputs/{}_precisionRecall.png')
+
 # Plot accuracy and loss curves
 plt.figure(figsize=(12, 4))
 
@@ -156,7 +170,13 @@ figtitle = '3Dclassification_1e-5_epoch10.png'
 plt.savefig('Outputs/{}'.format(figtitle))
 
 converter = tf.lite.TFLiteConverter.from_keras_model(model)
+converter.target_spec.supported_ops = [
+  tf.lite.OpsSet.TFLITE_BUILTINS, # enable TensorFlow Lite ops.
+  tf.lite.OpsSet.SELECT_TF_OPS # enable TensorFlow ops.
+]
+
 tflite_model = converter.convert()
+
 
 #Output the graph values
 df = pd.DataFrame(list(zip(history.history['accuracy'], history.history['val_accuracy'], history.history['loss'], history.history['val_loss'])), columns=['Accuracy', 'Val_Accuracy', 'Loss', 'Val_Loss'])
