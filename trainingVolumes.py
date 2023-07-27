@@ -28,8 +28,8 @@ def load_data(filepath_tensor, label):
     return data, label
 
 # Define data directories
-train_dir = 'Classes3D/Train/'
-val_dir = 'Classes3D/Validation/'
+train_dir = 'Classes/Train/'
+val_dir = 'Classes/Validation/'
 
 #_________ Define some variables that will be used for running _________#
 
@@ -46,6 +46,10 @@ figtitle = '3Dclassification_1e-5_epoch1_dropout02.png'
 
 modelFileName = 'Model_3D_1e-5_dropout02.tflite'
 
+# Run in testing mode (only use subset of data) Y = 1 N = 0
+
+TestingMode = 1
+
 #____________________________________________________________________#
 
 #create empty lists for filepaths and labels
@@ -55,7 +59,7 @@ val_filepaths = []
 val_labels = []
 
 # Define mapping from class names to class indices
-class_map = {'Tomograms': 0, 'NonTomograms': 1}
+class_map = {'Tomogram': 0, 'NonTomogram': 1}
 
 trainClassFolders = [folder for folder in os.listdir(train_dir) if folder != ".DS_Store"]
 valClassFolders = [folder for folder in os.listdir(val_dir) if folder != ".DS_Store"]
@@ -67,9 +71,13 @@ for class_folder in trainClassFolders:
 
         # Iterate over the files in the class folder
         for file_name in file_names:
+            n = 1
             file_path = os.path.join(class_path, file_name)
             train_filepaths.append(file_path)
             train_labels.append(class_map[class_folder])  # Assuming class folder name represents the label
+            n = n+1
+            if TestingMode == 1 and n > 50:
+                break
     else:
         print(f"Warning: Directory '{class_path}' doesn't exist or is not a directory.")
 
@@ -80,9 +88,13 @@ for class_folder in valClassFolders:
 
         # Iterate over the files in the class folder
         for file_name in file_names:
+            n = 1
             file_path = os.path.join(class_path, file_name)
             val_filepaths.append(file_path)
             val_labels.append(class_map[class_folder])  # Assuming class folder name represents the label
+            n = n+1
+            if TestingMode == 1 and n > 50:
+                break
     else:
         print(f"Warning: Directory '{class_path}' doesn't exist or is not a directory.")
 
