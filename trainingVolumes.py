@@ -1,5 +1,7 @@
 import os
+import sys
 
+sklearn_path = '/hps/software/users/gerard/emdb/miniconda3/envs/jack/lib/python3.10/site-packages'
 #Codon environment setup
 
 os.system('module load cuda-11.1.1-gcc-9.3.0-oqr2b7d')
@@ -28,8 +30,8 @@ def load_data(filepath_tensor, label):
     return data, label
 
 # Define data directories
-train_dir = 'Classes/Train/'
-val_dir = 'Classes/Validation/'
+train_dir = 'Classes3D/Train/'
+val_dir = 'Classes3D/Validation/'
 
 #_________ Define some variables that will be used for running _________#
 
