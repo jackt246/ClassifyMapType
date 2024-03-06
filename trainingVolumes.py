@@ -17,7 +17,8 @@ import pandas as pd
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import mrcfile
 from sklearn.metrics import precision_recall_curve
-
+import seaborn as sns
+from sklearn.metrics import confusion_matrix
 
 
 
@@ -139,6 +140,10 @@ validation_steps = len(val_filepaths) // batch_size
 datasetTraining = datasetTraining.shuffle(len(train_filepaths)).repeat().batch(batch_size)
 datasetValidation = datasetValidation.batch(batch_size)
 
+# Extract features and labels for training and validation sets
+x_train, y_train = next(iter(datasetTraining))
+x_test, y_test = next(iter(datasetValidation))
+
 # Train the model
 history = model.fit(
     datasetTraining,
@@ -182,6 +187,22 @@ plt.legend(['Train', 'Validation'], loc='upper right')
 
 figtitle = '3Dclassification_1e-5_epoch10.png'
 plt.savefig('Outputs/{}'.format(figtitle))
+
+# Get the predicted classes
+y_pred_classes = np.argmax(y_pred, axis=1)
+
+# Calculate confusion matrix
+conf_matrix = confusion_matrix(y_test, y_pred_classes)
+
+# Plot confusion matrix
+plt.figure(figsize=(8, 6))
+sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues',
+            xticklabels=['Tomograms', 'NonTomograms'],
+            yticklabels=['Tomograms', 'NonTomograms'])
+plt.xlabel('Predicted labels')
+plt.ylabel('True labels')
+plt.title('Confusion Matrix')
+plt.show()
 
 converter = tf.lite.TFLiteConverter.from_keras_model(model)
 converter.target_spec.supported_ops = [
