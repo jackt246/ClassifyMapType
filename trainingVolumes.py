@@ -143,7 +143,9 @@ datasetValidation = datasetValidation.batch(batch_size)
 # Extract features and labels for training and validation sets
 x_train, y_train = next(iter(datasetTraining))
 x_test, y_test = next(iter(datasetValidation))
-y_test = y_test.flatten()  # or y_test.ravel()
+# Convert y_test to a NumPy array and flatten it
+y_test = np.array(y_test).flatten()
+
 
 # Train the model
 history = model.fit(
