@@ -61,7 +61,7 @@ val_filepaths = []
 val_labels = []
 
 # Define mapping from class names to class indices
-class_map = {'Tomogram': 0, 'NonTomograms': 1}
+class_map = {'Tomograms': 0, 'NonTomograms': 1}
 
 trainClassFolders = [folder for folder in os.listdir(train_dir) if folder != ".DS_Store"]
 valClassFolders = [folder for folder in os.listdir(val_dir) if folder != ".DS_Store"]
