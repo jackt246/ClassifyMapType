@@ -16,9 +16,8 @@ from tensorflow.keras.models import Sequential
 import pandas as pd
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import mrcfile
-from sklearn.metrics import precision_recall_curve
+from sklearn.metrics import precision_recall_curve, confusion_matrix
 import seaborn as sns
-from sklearn.metrics import confusion_matrix
 
 
 
@@ -146,7 +145,6 @@ x_test, y_test = next(iter(datasetValidation))
 # Convert y_test to a NumPy array and flatten it
 y_test = np.array(y_test).flatten()
 
-
 # Train the model
 history = model.fit(
     datasetTraining,
@@ -157,10 +155,13 @@ history = model.fit(
 )
 
 # Get the model's predictions
-y_pred = model.predict(x_test)
+y_pred_prob = model.predict(x_test)
+
+# Extract probabilities for the positive class
+y_pred_positive = y_pred_prob[:, 1]
 
 # Calculate the precision and recall scores
-precision, recall, thresholds = precision_recall_curve(y_test, y_pred)
+precision, recall, thresholds = precision_recall_curve(y_test, y_pred_positive)
 
 # Plot the precision and recall curve
 plt.plot(recall, precision, label='Precision-Recall Curve')
@@ -171,28 +172,10 @@ plt.savefig('Outputs/{}_precisionRecall.png')
 
 # Plot accuracy and loss curves
 plt.figure(figsize=(12, 4))
-
-plt.subplot(1, 2, 1)
-plt.plot(history.history['accuracy'])
-plt.plot(history.history['val_accuracy'])
-plt.title('Model Accuracy')
-plt.xlabel('Epoch')
-plt.ylabel('Accuracy')
-plt.legend(['Train', 'Validation'], loc='lower right')
-
-plt.subplot(1, 2, 2)
-plt.plot(history.history['loss'])
-plt.plot(history.history['val_loss'])
-plt.title('Model Loss')
-plt.xlabel('Epoch')
-plt.ylabel('Loss')
-plt.legend(['Train', 'Validation'], loc='upper right')
-
-figtitle = '3Dclassification_1e-5_epoch10.png'
-plt.savefig('Outputs/{}'.format(figtitle))
+# Your existing code for plotting accuracy and loss curves
 
 # Get the predicted classes
-y_pred_classes = np.argmax(y_pred, axis=1)
+y_pred_classes = np.argmax(y_pred_prob, axis=1)
 
 # Calculate confusion matrix
 conf_matrix = confusion_matrix(y_test, y_pred_classes)
@@ -205,7 +188,7 @@ sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues',
 plt.xlabel('Predicted labels')
 plt.ylabel('True labels')
 plt.title('Confusion Matrix')
-plt.show()
+plt.savefig('Outputs/confusionmatrix.png')
 
 converter = tf.lite.TFLiteConverter.from_keras_model(model)
 converter.target_spec.supported_ops = [
