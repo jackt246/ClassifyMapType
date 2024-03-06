@@ -180,6 +180,9 @@ y_pred_classes = np.argmax(y_pred_prob, axis=1)
 # Calculate confusion matrix
 conf_matrix = confusion_matrix(y_test, y_pred_classes)
 
+# Calculate confusion matrix with specified labels
+conf_matrix = confusion_matrix(y_test, y_pred_classes, labels=[0, 1])  # Specify the labels explicitly
+
 # Plot confusion matrix
 plt.figure(figsize=(8, 6))
 sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues',
@@ -188,7 +191,7 @@ sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues',
 plt.xlabel('Predicted labels')
 plt.ylabel('True labels')
 plt.title('Confusion Matrix')
-plt.savefig('Outputs/confusionmatrix.png')
+plt.show()
 
 converter = tf.lite.TFLiteConverter.from_keras_model(model)
 converter.target_spec.supported_ops = [
