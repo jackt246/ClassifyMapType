@@ -36,7 +36,7 @@ val_dir = 'Classes3D/Validation/'
 #_________ Define some variables that will be used for running _________#
 
 batch_size = 1
-epochs = 1
+epochs = 50
 trainingRate = 1e-5
 dropout = 0.2
 
