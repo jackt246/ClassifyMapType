@@ -16,7 +16,7 @@ from tensorflow.keras.models import Sequential
 import pandas as pd
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import mrcfile
-from sklearn.metrics import precision_recall_curve, confusion_matrix
+from sklearn.metrics import precision_recall_curve, confusion_matrix, classification_report
 import seaborn as sns
 
 
@@ -170,18 +170,18 @@ plt.ylabel('Precision')
 plt.legend()
 plt.savefig('Outputs/{}_precisionRecall.png')
 
-# Plot accuracy and loss curves
-plt.figure(figsize=(12, 4))
-# Your existing code for plotting accuracy and loss curves
+# Get the model's predictions for the validation set
+y_val_pred_prob = model.predict(datasetValidation)
+y_val_pred_classes = np.argmax(y_val_pred_prob, axis=1)
 
-# Get the predicted classes
-y_pred_classes = np.argmax(y_pred_prob, axis=1)
+# Convert y_test to a NumPy array and flatten it
+y_val_true = np.array(val_labels).flatten()
 
 # Calculate confusion matrix
-conf_matrix = confusion_matrix(y_test, y_pred_classes)
-
-# Calculate confusion matrix with specified labels
-conf_matrix = confusion_matrix(y_test, y_pred_classes, labels=[0, 1])  # Specify the labels explicitly
+conf_matrix = confusion_matrix(y_val_true, y_val_pred_classes)
+# Print confusion matrix
+print("Confusion Matrix:")
+print(conf_matrix)
 
 # Plot confusion matrix
 plt.figure(figsize=(8, 6))
@@ -191,7 +191,13 @@ sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues',
 plt.xlabel('Predicted labels')
 plt.ylabel('True labels')
 plt.title('Confusion Matrix')
-plt.show()
+plt.savefig('Outputs/confusionMatrix.png')
+
+# Print classification report
+report = classification_report(y_val_true, y_val_pred_classes, target_names=['Tomograms', 'NonTomograms'])
+print("Classification Report:\n", report)
+
+# convert to tflite model
 
 converter = tf.lite.TFLiteConverter.from_keras_model(model)
 converter.target_spec.supported_ops = [
