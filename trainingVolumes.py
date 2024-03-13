@@ -167,6 +167,11 @@ y_pred_accumulated = np.array(y_pred_accumulated)
 y_true_accumulated = np.array(y_true_accumulated)
 y_true_categorical = np.argmax(y_true_accumulated, axis=0)
 
+print(y_pred_accumulated)
+print(y_true_accumulated)
+print(y_true_categorical)
+print(y_true_categorical.shape)
+
 # Calculate precision, recall, etc. using y_true_accumulated and y_pred_accumulated
 precision, recall, thresholds = precision_recall_curve(y_true_categorical, y_pred_accumulated)
 
