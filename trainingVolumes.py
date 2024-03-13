@@ -139,24 +139,6 @@ validation_steps = len(val_filepaths) // batch_size
 datasetTraining = datasetTraining.shuffle(len(train_filepaths)).repeat().batch(batch_size)
 datasetValidation = datasetValidation.batch(batch_size)
 
-# Convert datasets to NumPy arrays
-x_train, y_train = [], []
-for x, y in datasetTraining.as_numpy_iterator():
-    x_train.append(x)
-    y_train.append(y)
-x_train = np.concatenate(x_train, axis=0)
-y_train = np.concatenate(y_train, axis=0)
-
-x_test, y_test = [], []
-for x, y in datasetValidation.as_numpy_iterator():
-    x_test.append(x)
-    y_test.append(y)
-x_test = np.concatenate(x_test, axis=0)
-y_test = np.concatenate(y_test, axis=0)
-
-# Convert y_test to a NumPy array and flatten it
-y_test = y_test.flatten()
-
 # Train the model
 history = model.fit(
     datasetTraining,
@@ -166,14 +148,27 @@ history = model.fit(
     validation_steps=validation_steps
 )
 
-# Get the model's predictions
-y_pred_prob = model.predict(x_test)
+# Initialize lists to accumulate predictions and true labels
+y_pred_accumulated = []
+y_true_accumulated = []
 
-# Extract probabilities for the positive class
-y_pred_positive = y_pred_prob[:, 1]
+# Iterate over the dataset batch by batch
+for x_batch, y_batch in datasetValidation:
+    # Get predictions for the batch
+    y_pred_batch = model.predict(x_batch)
+    y_pred_accumulated.extend(y_pred_batch)
 
-# Calculate the precision and recall scores
-precision, recall, thresholds = precision_recall_curve(y_test, y_pred_positive)
+    # Convert true labels to numpy array and append to accumulated list
+    y_true_batch = np.array(y_batch).flatten()
+    y_true_accumulated.extend(y_true_batch)
+
+# Convert accumulated lists to numpy arrays
+y_pred_accumulated = np.array(y_pred_accumulated)
+y_true_accumulated = np.array(y_true_accumulated)
+
+# Calculate precision, recall, etc. using y_true_accumulated and y_pred_accumulated
+precision, recall, thresholds = precision_recall_curve(y_true_accumulated, y_pred_accumulated)
+
 
 # Plot the precision and recall curve
 plt.plot(recall, precision, label='Precision-Recall Curve')
