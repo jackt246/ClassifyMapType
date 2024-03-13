@@ -165,9 +165,10 @@ for x_batch, y_batch in datasetValidation:
 # Convert accumulated lists to numpy arrays
 y_pred_accumulated = np.array(y_pred_accumulated)
 y_true_accumulated = np.array(y_true_accumulated)
+y_true_categorical = np.argmax(y_true_accumulated, axis=1)
 
 # Calculate precision, recall, etc. using y_true_accumulated and y_pred_accumulated
-precision, recall, thresholds = precision_recall_curve(y_true_accumulated, y_pred_accumulated)
+precision, recall, thresholds = precision_recall_curve(y_true_categorical, y_pred_accumulated)
 
 
 # Plot the precision and recall curve
