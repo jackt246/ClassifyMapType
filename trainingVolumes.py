@@ -36,7 +36,7 @@ val_dir = 'Classes3D/Validation/'
 #_________ Define some variables that will be used for running _________#
 
 batch_size = 1
-epochs = 50
+epochs = 1
 trainingRate = 1e-5
 dropout = 0.2
 
@@ -139,11 +139,23 @@ validation_steps = len(val_filepaths) // batch_size
 datasetTraining = datasetTraining.shuffle(len(train_filepaths)).repeat().batch(batch_size)
 datasetValidation = datasetValidation.batch(batch_size)
 
-# Extract features and labels for training and validation sets
-x_train, y_train = next(iter(datasetTraining))
-x_test, y_test = next(iter(datasetValidation))
+# Convert datasets to NumPy arrays
+x_train, y_train = [], []
+for x, y in datasetTraining.as_numpy_iterator():
+    x_train.append(x)
+    y_train.append(y)
+x_train = np.concatenate(x_train, axis=0)
+y_train = np.concatenate(y_train, axis=0)
+
+x_test, y_test = [], []
+for x, y in datasetValidation.as_numpy_iterator():
+    x_test.append(x)
+    y_test.append(y)
+x_test = np.concatenate(x_test, axis=0)
+y_test = np.concatenate(y_test, axis=0)
+
 # Convert y_test to a NumPy array and flatten it
-y_test = np.array(y_test).flatten()
+y_test = y_test.flatten()
 
 # Train the model
 history = model.fit(
