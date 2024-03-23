@@ -164,7 +164,11 @@ for x_batch, y_batch in datasetValidation:
 
 # Convert accumulated lists to numpy arrays
 y_pred_accumulated = np.array(y_pred_accumulated)
+print('y_pred_accumulated is {} and the shape is {} wth a length of {}'.format(y_pred_accumulated,
+                                                                               y_pred_accumulated.shape, len(y_pred_accumulated)))
 y_true_accumulated = np.array(y_true_accumulated)
+print('y_true_accumulated is {} and the shape is {} wth a length of {}'.format(y_true_accumulated,
+                                                                               y_true_accumulated.shape, len(y_true_accumulated)))
 y_pred_classes = np.argmax(y_pred_accumulated, axis=1)
 # Convert one-hot encoded labels to single-label integers
 y_true_single_label = np.argmax(y_true_accumulated)
