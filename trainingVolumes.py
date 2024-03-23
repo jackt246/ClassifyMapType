@@ -169,13 +169,8 @@ y_pred_classes = np.argmax(y_pred_accumulated, axis=1)
 # Convert one-hot encoded labels to single-label integers
 y_true_single_label = np.argmax(y_true_accumulated)
 
-print(y_pred_accumulated.shape)
-print(y_true_accumulated.shape)
-print(y_pred_classes)
-print(y_true_single_label)
-
 # Calculate precision, recall, etc. using y_true_accumulated and y_pred_accumulated
-precision, recall, thresholds = precision_recall_curve(y_true_accumulated, y_pred_accumulated)
+precision, recall = precision_recall_curve(y_true_accumulated, y_pred_accumulated)
 
 
 # Plot the precision and recall curve
