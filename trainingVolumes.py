@@ -174,9 +174,9 @@ y_pred_classes = np.argmax(y_pred_accumulated, axis=1)
 y_true_single_label = np.argmax(y_true_accumulated)
 
 # Calculate precision, recall, etc. using y_true_accumulated and y_pred_accumulated
-y_pred_accumulated = y_pred_accumulated.flatten()  # Reshape to 1D
-precision, recall, thresholds = precision_recall_curve(y_true_accumulated, y_pred_accumulated)
-
+# Assuming the second column contains probability for class 1 (tomogram)
+y_pred_prob = y_pred_accumulated[:, 1]
+precision, recall, thresholds = precision_recall_curve(y_true_accumulated, y_pred_prob)
 
 # Plot the precision and recall curve
 plt.plot(recall, precision, label='Precision-Recall Curve')
