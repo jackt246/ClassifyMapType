@@ -167,7 +167,7 @@ y_pred_accumulated = np.array(y_pred_accumulated)
 y_true_accumulated = np.array(y_true_accumulated)
 y_pred_classes = np.argmax(y_pred_accumulated, axis=1)
 # Convert one-hot encoded labels to single-label integers
-y_true_single_label = np.argmax(y_true_accumulated, axis=1)
+y_true_single_label = np.argmax(y_true_accumulated)
 
 print(y_pred_accumulated)
 print(y_true_accumulated)
