@@ -148,5 +148,5 @@ df = pd.DataFrame(list(zip(acc, val_acc, loss, val_loss)), columns=['Accuracy', 
 df.to_csv('Outputs/{}.csv'.format(figtitle.strip('.png')))
 
 # Save the model.
-with open('Training_summary_ImgSize200_learningrate1e4_epoch5_SGD_noaug_dropout0_01ds_01val', 'wb') as f:
+with open('Training_summary_ImgSize200_learningrate1e4_epoch5_SGD_noaug_dropout0_01ds_01val.tflite', 'wb') as f:
   f.write(tflite_model)

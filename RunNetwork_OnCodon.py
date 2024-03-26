@@ -100,7 +100,6 @@ for file in FilesList:
     # Open and pre-process map
     MapLocation = '{}/{}'.format(Folder, file)
 
-
     # Set up information on the data
 
     Model = runModel('Training_summary_ImgSize200_learningrate1e4_epoch5_SGD_noaug_dropout0_01ds_01val.tflite', MapLocation)

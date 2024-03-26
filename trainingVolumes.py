@@ -23,7 +23,6 @@ import seaborn as sns
 
 # Load data function to be used by tf later on
 def load_data(filepath_tensor, label):
-
     filepath = filepath_tensor.numpy().decode('utf-8')
     with mrcfile.open(filepath) as mrc:
         data = mrc.data
