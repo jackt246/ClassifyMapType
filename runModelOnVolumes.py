@@ -1,18 +1,16 @@
 import os
-
 import tensorflow as tf
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-
 import mrcfile as mrc
-import sys
 
 
 class runModel():
     def __init__(self, modelPath, mapPath):
         self.modelPath = modelPath
-        self.mapArray = mrc.read(mapPath)
+
+        with mrc.open(mapPath, 'r') as mapfile:
+            self.mapArray = mapfile.data
 
     def runPrediction(self):
         interpreter = tf.lite.Interpreter(model_path=self.modelPath)
@@ -21,7 +19,7 @@ class runModel():
         print('Signature: {}'.format(signatures))
 
         classify_lite = interpreter.get_signature_runner('serving_default')
-        predictions = classify_lite(rescaling_1_input=self.preppedarray)['outputs']
+        predictions = classify_lite(conv3d_input=self.preppedarray)['dense_1']
 
 
         score = tf.nn.softmax(predictions)
@@ -51,9 +49,16 @@ class runModel():
             self.preppedarray = self.arrayPad[axis0start:axis0start+endArraySize, axis1start:axis1start+endArraySize,
                            axis2start:axis2start+endArraySize]
 
+            # Reshape to add batch and channel dimensions
+            self.preppedarray = np.expand_dims(self.preppedarray, axis=0)  # Add batch dimension (axis=0)
+            self.preppedarray = np.expand_dims(self.preppedarray, axis=-1)  # Add channel dimension (axis=-1)
             return self.preppedarray
         else:
-            return self.arrayPad
+            self.preppedarray = self.arrayPad
+            # Reshape to add batch and channel dimensions
+            self.preppedarray = np.expand_dims(self.preppedarray, axis=0)  # Add batch dimension (axis=0)
+            self.preppedarray = np.expand_dims(self.preppedarray, axis=-1)  # Add channel dimension (axis=-1)
+            return self.preppedarray
 
 Folder = 'ValidationData_NotForTraining/Tomograms'
 FilesList = os.listdir(Folder)
@@ -65,7 +70,7 @@ Results = pd.DataFrame(columns=['Map', 'Expected Type', 'Predicted Type', 'Predi
 for file in FilesList:
     # Open and pre-process map
     MapLocation = '{}/{}'.format(Folder, file)
-
+    print(MapLocation)
     # Set up information on the data
 
     Model = runModel('3dconv.tflite', MapLocation)
