@@ -24,7 +24,7 @@ class runModel():
 
         score = tf.nn.softmax(predictions)
 
-        class_names = ['Non-Tomogram', 'Tomogram']
+        class_names = ['Tomogram', 'Non-Tomogram']
         print(
             "This map is likely a {} with a {:.2f} percent confidence."
             .format(class_names[np.argmax(score)], 100 * np.max(score))
