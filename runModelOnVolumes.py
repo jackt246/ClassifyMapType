@@ -40,8 +40,8 @@ class runModel():
         endArraySize = 200
         print(self.mapArray)
         #pad array to end size
-        pad_width = [(max(endArraySize - shape, 0) // 2, max(endArraySize - shape, 0) - max(endArraySize - shape, 0) // 2) for shape in self.maparray.shape]
-        arrayPad = np.pad(self.maparray, pad_width, 'constant')
+        pad_width = [(max(endArraySize - shape, 0) // 2, max(endArraySize - shape, 0) - max(endArraySize - shape, 0) // 2) for shape in self.mapArray.shape]
+        arrayPad = np.pad(self.mapArray, pad_width, 'constant')
 
         if any(x > 200 for x in arrayPad.shape):
             #then crop
