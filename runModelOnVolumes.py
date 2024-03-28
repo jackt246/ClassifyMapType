@@ -38,7 +38,7 @@ class runModel():
 
     def cropAndPad(self):
         endArraySize = 200
-
+        print(self.mapArray)
         #pad array to end size
         pad_width = [(max(endArraySize - shape, 0) // 2, max(endArraySize - shape, 0) - max(endArraySize - shape, 0) // 2) for shape in self.maparray.shape]
         arrayPad = np.pad(self.maparray, pad_width, 'constant')
