@@ -18,21 +18,25 @@ class runModel():
         signatures = interpreter.get_signature_list()
         print('Signature: {}'.format(signatures))
 
-        classify_lite = interpreter.get_signature_runner('serving_default')
-        predictions = classify_lite(conv3d_input=self.preppedarray)['dense_1']
+        try:
+            classify_lite = interpreter.get_signature_runner('serving_default')
+            predictions = classify_lite(conv3d_input=self.preppedarray)['dense_1']
 
 
-        score = tf.nn.softmax(predictions)
+            score = tf.nn.softmax(predictions)
 
-        class_names = ['Tomogram', 'Non-Tomogram']
-        print(
-            "This map is likely a {} with a {:.2f} percent confidence."
-            .format(class_names[np.argmax(score)], 100 * np.max(score))
-        )
+            class_names = ['Tomogram', 'Non-Tomogram']
+            print(
+                "This map is likely a {} with a {:.2f} percent confidence."
+                .format(class_names[np.argmax(score)], 100 * np.max(score))
+            )
 
-        data = pd.DataFrame({'Map': file, 'Expected Type': Folder, 'Predicted Type': class_names[np.argmax(score)],
+            data = pd.DataFrame({'Map': file, 'Expected Type': Folder, 'Predicted Type': class_names[np.argmax(score)],
                              'Prediction score %': 100 * np.max(score)}, index=[0])
-        return data
+            return data
+
+        except:
+            print('unable to run model on this entry')
 
     def cropAndPad(self):
         endArraySize = 200
