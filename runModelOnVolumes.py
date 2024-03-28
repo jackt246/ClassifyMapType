@@ -40,8 +40,8 @@ class runModel():
         endArraySize = 200
 
         #pad array to end size
-        pad_width = [(max(endArraySize - shape, 0) // 2, max(endArraySize - shape, 0) - max(endArraySize - shape, 0) // 2) for shape in self.array.shape]
-        arrayPad = np.pad(self.array, pad_width, 'constant')
+        pad_width = [(max(endArraySize - shape, 0) // 2, max(endArraySize - shape, 0) - max(endArraySize - shape, 0) // 2) for shape in self.maparray.shape]
+        arrayPad = np.pad(self.maparray, pad_width, 'constant')
 
         if any(x > 200 for x in arrayPad.shape):
             #then crop
@@ -49,12 +49,12 @@ class runModel():
             axis1start = arrayPad.shape[1] // 2 - (endArraySize//2)
             axis2start = arrayPad.shape[2] // 2 - (endArraySize//2)
 
-            croppedArray = arrayPad[axis0start:axis0start+endArraySize, axis1start:axis1start+endArraySize,
+            preppedarray = arrayPad[axis0start:axis0start+endArraySize, axis1start:axis1start+endArraySize,
                            axis2start:axis2start+endArraySize]
 
             return self.preppedarray
         else:
-            return self.prepperarray
+            return self.arrayPad
 
 Folder = 'ValidationData_NotForTraining/Tomograms'
 FilesList = os.listdir(Folder)
