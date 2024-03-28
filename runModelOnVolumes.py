@@ -5,14 +5,11 @@ import pandas as pd
 import mrcfile as mrc
 
 
-class runModel():
-    def __init__(self, modelPath, mapPath):
+class convModel():
+    def __init__(self, modelPath):
         self.modelPath = modelPath
 
-        with mrc.open(mapPath, 'r') as mapfile:
-            self.mapArray = mapfile.data
-
-    def runPrediction(self):
+    def runPrediction(self, map):
         interpreter = tf.lite.Interpreter(model_path=self.modelPath)
         #Tensorflow has a habit of changing the signatures so this is run to tell me what it is
         signatures = interpreter.get_signature_list()
@@ -20,7 +17,7 @@ class runModel():
 
         try:
             classify_lite = interpreter.get_signature_runner('serving_default')
-            predictions = classify_lite(conv3d_input=self.preppedarray)['dense_1']
+            predictions = classify_lite(conv3d_input=map)['dense_1']
 
 
             score = tf.nn.softmax(predictions)
@@ -38,6 +35,12 @@ class runModel():
         except:
             print('unable to run model on this entry')
 
+
+
+class mapObject():
+    def __init__(self, mapPath):
+        with mrc.open(mapPath, 'r') as mapfile:
+            self.mapArray = mapfile.data
     def cropAndPad(self):
         endArraySize = 200
         #pad array to end size
@@ -69,17 +72,15 @@ FilesList = os.listdir(Folder)
 
 Results = pd.DataFrame(columns=['Map', 'Expected Type', 'Predicted Type', 'Prediction score %'])
 
-#Open and pre-process map
+model = convModel('3dconv.tflite')
 
 for file in FilesList:
     # Open and pre-process map
     MapLocation = '{}/{}'.format(Folder, file)
     print(MapLocation)
-    # Set up information on the data
-
-    Model = runModel('3dconv.tflite', MapLocation)
-    Model.cropAndPad()
-    data = Model.runPrediction()
+    map = mapObject(MapLocation)
+    processedMap = map.cropAndPad()
+    data = model.runPrediction(processedMap)
 
     Results = pd.concat([Results, data], ignore_index=True)
 
