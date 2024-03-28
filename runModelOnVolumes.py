@@ -38,18 +38,17 @@ class runModel():
 
     def cropAndPad(self):
         endArraySize = 200
-        print(self.mapArray)
         #pad array to end size
         pad_width = [(max(endArraySize - shape, 0) // 2, max(endArraySize - shape, 0) - max(endArraySize - shape, 0) // 2) for shape in self.mapArray.shape]
-        arrayPad = np.pad(self.mapArray, pad_width, 'constant')
+        self.arrayPad = np.pad(self.mapArray, pad_width, 'constant')
 
-        if any(x > 200 for x in arrayPad.shape):
+        if any(x > 200 for x in self.arrayPad.shape):
             #then crop
-            axis0start = arrayPad.shape[0] // 2 - (endArraySize//2)
-            axis1start = arrayPad.shape[1] // 2 - (endArraySize//2)
-            axis2start = arrayPad.shape[2] // 2 - (endArraySize//2)
+            axis0start = self.arrayPad.shape[0] // 2 - (endArraySize//2)
+            axis1start = self.arrayPad.shape[1] // 2 - (endArraySize//2)
+            axis2start = self.arrayPad.shape[2] // 2 - (endArraySize//2)
 
-            preppedarray = arrayPad[axis0start:axis0start+endArraySize, axis1start:axis1start+endArraySize,
+            self.preppedarray = self.arrayPad[axis0start:axis0start+endArraySize, axis1start:axis1start+endArraySize,
                            axis2start:axis2start+endArraySize]
 
             return self.preppedarray
