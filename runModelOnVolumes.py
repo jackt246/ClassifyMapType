@@ -78,11 +78,15 @@ for file in FilesList:
     # Open and pre-process map
     MapLocation = '{}/{}'.format(Folder, file)
     print(MapLocation)
-    map = mapObject(MapLocation)
-    processedMap = map.cropAndPad()
-    data = model.runPrediction(processedMap)
+    try:
+        map = mapObject(MapLocation)
+        processedMap = map.cropAndPad()
+        data = model.runPrediction(processedMap)
+        Results = pd.concat([Results, data], ignore_index=True)
 
-    Results = pd.concat([Results, data], ignore_index=True)
+    except:
+        print('failing to run model on {}'.format(file)
+
 
 print(Results)
 Results.to_csv('results_{}.csv'.format(Folder))
