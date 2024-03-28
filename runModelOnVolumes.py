@@ -85,7 +85,7 @@ for file in FilesList:
         Results = pd.concat([Results, data], ignore_index=True)
 
     except:
-        print('failing to run model on {}'.format(file)
+        print('failing to run model on {}'.format(file))
 
 
 print(Results)
