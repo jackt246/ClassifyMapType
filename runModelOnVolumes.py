@@ -76,6 +76,7 @@ model = convModel('3dconv.tflite')
 
 for file in FilesList:
     # Open and pre-process map
+    print(Results)
     MapLocation = '{}/{}'.format(Folder, file)
     print(MapLocation)
     try:
