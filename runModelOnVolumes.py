@@ -82,10 +82,20 @@ for file in FilesList:
         map = mapObject(MapLocation)
         processedMap = map.cropAndPad()
         data = model.runPrediction(processedMap)
-        Results = pd.concat([Results, data], ignore_index=True)
 
-    except:
-        print('failing to run model on {}'.format(file))
+        # Attempt to concatenate data with Results DataFrame
+        try:
+            Results = pd.concat([Results, data], ignore_index=True)
+        except pd.errors.EmptyDataError:
+            # Handle case where data DataFrame is empty
+            print("Data DataFrame is empty for file: {}".format(file))
+        except pd.errors.DtypeWarning:
+            # Handle other potential errors related to DataFrame concatenation
+            print("Error concatenating DataFrame for file: {}".format(file))
+
+    except Exception as e:
+        # Catch any other exceptions that might occur
+        print('Error processing file {}: {}'.format(file, str(e)))
 
 
 print(Results)
