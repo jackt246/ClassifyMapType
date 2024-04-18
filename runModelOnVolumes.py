@@ -76,14 +76,13 @@ model = convModel('3dconv.tflite')
 
 for file in FilesList:
     # Open and pre-process map
-    print(Results)
     MapLocation = '{}/{}'.format(Folder, file)
     print(MapLocation)
     try:
         map = mapObject(MapLocation)
         processedMap = map.cropAndPad()
         data = model.runPrediction(processedMap)
-
+        print(data)
         # Attempt to concatenate data with Results DataFrame
         try:
             Results = pd.concat([Results, data], ignore_index=True)
@@ -97,7 +96,6 @@ for file in FilesList:
     except Exception as e:
         # Catch any other exceptions that might occur
         print('Error processing file {}: {}'.format(file, str(e)))
-
 
 print(Results)
 Results.to_csv('results_Tomography.csv')
