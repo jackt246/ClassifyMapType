@@ -67,7 +67,7 @@ class mapObject():
             self.preppedarray = np.expand_dims(self.preppedarray, axis=-1)  # Add channel dimension (axis=-1)
             return self.preppedarray
 
-Folder = 'ValidationData_NotForTraining/Helical'
+Folder = 'ValidationData_NotForTraining/SPA'
 FilesList = os.listdir(Folder)
 
 Results = pd.DataFrame(columns=['Map', 'Expected Type', 'Predicted Type', 'Prediction score %'])
@@ -98,4 +98,4 @@ for file in FilesList:
         print('Error processing file {}: {}'.format(file, str(e)))
 
 print(Results)
-Results.to_csv('results_Helical.csv')
+Results.to_csv('results_SPA.csv')
