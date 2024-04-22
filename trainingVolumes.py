@@ -37,15 +37,15 @@ val_dir = 'Classes3D/Validation/'
 batch_size = 1
 epochs = 50
 trainingRate = 1e-5
-dropout = 0.2
+dropout = 0.4
 
 # Filname of figure with accuracy and loss info
 
-figtitle = '3Dclassification_1e-5_epoch1_dropout02.png'
+figtitle = '3Dclassification_1e-5_epoch1_dropout04.png'
 
 # Filename for output model so we can reuse it if it is any good
 
-modelFileName = 'Model_3D_1e-5_dropout02.tflite'
+modelFileName = 'Model_3D_1e-5_dropout04.tflite'
 
 # Run in testing mode (only use subset of data) Y = 1 N = 0
 
@@ -118,6 +118,7 @@ model = Sequential([
     layers.Dropout(dropout),
     layers.Conv3D(64, (3, 3, 3), activation='relu'),
     layers.MaxPooling3D((2, 2, 2)),
+    layers.Dropout(dropout),
     layers.Conv3D(128, (3, 3, 3), activation='relu'),
     layers.MaxPooling3D((2, 2, 2)),
     layers.Flatten(),
