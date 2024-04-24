@@ -66,36 +66,50 @@ class mapObject():
             self.preppedarray = np.expand_dims(self.preppedarray, axis=0)  # Add batch dimension (axis=0)
             self.preppedarray = np.expand_dims(self.preppedarray, axis=-1)  # Add channel dimension (axis=-1)
             return self.preppedarray
+    Folder = 'ValidationData_NotForTraining/SPA'
+def run(Folder, CSVname):
+    FilesList = os.listdir(Folder)
 
-Folder = 'ValidationData_NotForTraining/SPA'
-FilesList = os.listdir(Folder)
+    Results = pd.DataFrame(columns=['Map', 'Expected Type', 'Predicted Type', 'Prediction score %'])
 
-Results = pd.DataFrame(columns=['Map', 'Expected Type', 'Predicted Type', 'Prediction score %'])
+    model = convModel('3dconv.tflite')
 
-model = convModel('3dconv.tflite')
-
-for file in FilesList:
-    # Open and pre-process map
-    MapLocation = '{}/{}'.format(Folder, file)
-    print(MapLocation)
-    try:
-        map = mapObject(MapLocation)
-        processedMap = map.cropAndPad()
-        data = model.runPrediction(processedMap)
-        print(data)
-        # Attempt to concatenate data with Results DataFrame
+    for file in FilesList:
+        # Open and pre-process map
+        MapLocation = '{}/{}'.format(Folder, file)
+        print(MapLocation)
         try:
-            Results = pd.concat([Results, data], ignore_index=True)
-        except pd.errors.EmptyDataError:
-            # Handle case where data DataFrame is empty
-            print("Data DataFrame is empty for file: {}".format(file))
-        except pd.errors.DtypeWarning:
-            # Handle other potential errors related to DataFrame concatenation
-            print("Error concatenating DataFrame for file: {}".format(file))
+            map = mapObject(MapLocation)
+            processedMap = map.cropAndPad()
+            data = model.runPrediction(processedMap)
+            print(data)
+            # Attempt to concatenate data with Results DataFrame
+            try:
+                Results = pd.concat([Results, data], ignore_index=True)
+            except pd.errors.EmptyDataError:
+                # Handle case where data DataFrame is empty
+                print("Data DataFrame is empty for file: {}".format(file))
+            except pd.errors.DtypeWarning:
+                # Handle other potential errors related to DataFrame concatenation
+                print("Error concatenating DataFrame for file: {}".format(file))
 
-    except Exception as e:
-        # Catch any other exceptions that might occur
-        print('Error processing file {}: {}'.format(file, str(e)))
+        except Exception as e:
+            # Catch any other exceptions that might occur
+            print('Error processing file {}: {}'.format(file, str(e)))
 
-print(Results)
-Results.to_csv('results_SPA.csv')
+    Results.to_csv('{}.csv'.format(CSVname))
+
+# run on Tomograms
+run('ValidationData_NotForTraining/Tomograms', 'Tomograms_Model_3D_1e-5_dropout04')
+
+# run on STA
+run('ValidationData_NotForTraining/STA', 'STA_Model_3D_1e-5_dropout04')
+
+# run on SPA
+run('ValidationData_NotForTraining/SPA', 'SPA_Model_3D_1e-5_dropout04')
+
+# run on IPET
+run('ValidationData_NotForTraining/Ipets', 'Ipets_Model_3D_1e-5_dropout04')
+
+# run on helical
+run('ValidationData_NotForTraining/Helical', 'Helical_Model_3D_1e-5_dropout04')
