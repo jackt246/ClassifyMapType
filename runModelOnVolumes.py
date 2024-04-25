@@ -9,7 +9,7 @@ class convModel():
     def __init__(self, modelPath):
         self.modelPath = modelPath
 
-    def runPrediction(self, map):
+    def runPrediction(self, map, file, Folder):
         interpreter = tf.lite.Interpreter(model_path=self.modelPath)
         #Tensorflow has a habit of changing the signatures so this is run to tell me what it is
         signatures = interpreter.get_signature_list()
@@ -81,8 +81,7 @@ def run(Folder, CSVname):
         try:
             map = mapObject(MapLocation)
             processedMap = map.cropAndPad()
-            data = model.runPrediction(processedMap)
-            print(data)
+            data = model.runPrediction(processedMap, file, Folder)
             # Attempt to concatenate data with Results DataFrame
             try:
                 Results = pd.concat([Results, data], ignore_index=True)
