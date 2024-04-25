@@ -113,13 +113,13 @@ input_shape = (200, 200, 200, 1)
 
 #Define the model
 model = Sequential([
-    layers.Conv3D(32, (3, 3, 3), activation='relu', input_shape=input_shape),
-    layers.MaxPooling3D((2, 2, 2)),
-    layers.Dropout(dropout),
-    layers.Conv3D(64, (3, 3, 3), activation='relu'),
+    layers.Conv3D(64, (3, 3, 3), activation='relu', input_shape=input_shape),
     layers.MaxPooling3D((2, 2, 2)),
     layers.Dropout(dropout),
     layers.Conv3D(128, (3, 3, 3), activation='relu'),
+    layers.MaxPooling3D((2, 2, 2)),
+    layers.Dropout(dropout),
+    layers.Conv3D(256, (3, 3, 3), activation='relu'),
     layers.MaxPooling3D((2, 2, 2)),
     layers.Flatten(),
     layers.Dense(64, activation='relu'),
@@ -183,7 +183,7 @@ plt.plot(recall, precision, label='Precision-Recall Curve')
 plt.xlabel('Recall')
 plt.ylabel('Precision')
 plt.legend()
-plt.savefig('Outputs/{}_precisionRecall.png')
+plt.savefig('Outputs/{}_precisionRecall.png'.format(figtitle))
 
 # Get the model's predictions for the validation set
 y_val_pred_prob = model.predict(datasetValidation)
