@@ -3,6 +3,7 @@ import tensorflow as tf
 import numpy as np
 import pandas as pd
 import mrcfile as mrc
+import threading
 
 
 class convModel():
@@ -98,17 +99,41 @@ def run(Folder, CSVname):
 
     Results.to_csv('{}.csv'.format(CSVname))
 
-# run on Tomograms
-run('ValidationData_NotForTraining/Tomograms', 'Tomograms_Model_3D_1e-5_dropout04')
+def run_task(data_folder, model_name):
+    run(data_folder, model_name)
 
-# run on STA
-run('ValidationData_NotForTraining/STA', 'STA_Model_3D_1e-5_dropout04')
+tasks = [
+    ('ValidationData_NotForTraining/Tomograms', 'Tomograms_Model_3D_1e-5_dropout04'),
+    ('ValidationData_NotForTraining/STA', 'STA_Model_3D_1e-5_dropout04'),
+    ('ValidationData_NotForTraining/SPA', 'SPA_Model_3D_1e-5_dropout04'),
+    ('ValidationData_NotForTraining/Ipets', 'Ipets_Model_3D_1e-5_dropout04'),
+    ('ValidationData_NotForTraining/Helical', 'Helical_Model_3D_1e-5_dropout04')
+]
 
-# run on SPA
-run('ValidationData_NotForTraining/SPA', 'SPA_Model_3D_1e-5_dropout04')
+# Create and start threads for each task
+threads = []
+for task in tasks:
+    thread = threading.Thread(target=run_task, args=task)
+    thread.start()
+    threads.append(thread)
 
-# run on IPET
-run('ValidationData_NotForTraining/Ipets', 'Ipets_Model_3D_1e-5_dropout04')
+# Wait for all threads to complete
+for thread in threads:
+    thread.join()
 
-# run on helical
-run('ValidationData_NotForTraining/Helical', 'Helical_Model_3D_1e-5_dropout04')
+print("All tasks completed.")
+
+# # run on Tomograms
+# run('ValidationData_NotForTraining/Tomograms', 'Tomograms_Model_3D_1e-5_dropout04')
+#
+# # run on STA
+# run('ValidationData_NotForTraining/STA', 'STA_Model_3D_1e-5_dropout04')
+#
+# # run on SPA
+# run('ValidationData_NotForTraining/SPA', 'SPA_Model_3D_1e-5_dropout04')
+#
+# # run on IPET
+# run('ValidationData_NotForTraining/Ipets', 'Ipets_Model_3D_1e-5_dropout04')
+#
+# # run on helical
+# run('ValidationData_NotForTraining/Helical', 'Helical_Model_3D_1e-5_dropout04')
