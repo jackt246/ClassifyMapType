@@ -35,21 +35,22 @@ val_dir = 'Classes3D/Validation/'
 #_________ Define some variables that will be used for running _________#
 
 batch_size = 1
-epochs = 50
+epochs = 150
 trainingRate = 1e-5
-dropout = 0.4
+dropout = 0.2
 
+name = '3DConv_epoch100_trainingrate1e-4_dropout02'
 # Filname of figure with accuracy and loss info
 
-figtitle = '3Dclassification_1e-5_epoch1_dropout04.png'
+figtitle = '{}.png'.format(name)
 
 # Filename for output model so we can reuse it if it is any good
 
-modelFileName = 'Model_3D_1e-5_dropout04.tflite'
+modelFileName = '{}.tflite'.format(name)
 
 # Run in testing mode (only use subset of data) Y = 1 N = 0
 
-TestingMode = 1
+TestingMode = 0
 
 #____________________________________________________________________#
 
