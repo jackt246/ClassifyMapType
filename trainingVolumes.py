@@ -18,6 +18,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import mrcfile
 from sklearn.metrics import precision_recall_curve, confusion_matrix, classification_report
 import seaborn as sns
+from tensorflow.keras.layers import BatchNormalization
 
 
 
@@ -39,7 +40,7 @@ epochs = 150
 trainingRate = 1e-5
 dropout = 0.2
 
-name = '3DConv_epoch100_trainingrate1e-4_dropout02'
+name = '3DConv_epoch100_trainingrate1e-5_dropout02_newlayers'
 # Filname of figure with accuracy and loss info
 
 figtitle = '{}.png'.format(name)
@@ -76,7 +77,7 @@ for class_folder in trainClassFolders:
             n = 1
             file_path = os.path.join(class_path, file_name)
             train_filepaths.append(file_path)
-            train_labels.append(class_map[class_folder])  # Assuming class folder name represents the label
+            train_labels.append(class_map[class_folder])
             n = n+1
             if TestingMode == 1 and n > 50:
                 break
@@ -112,18 +113,25 @@ datasetValidation = datasetValidation.map(lambda x, y: tf.py_function(load_data,
 # Define input shape
 input_shape = (200, 200, 200, 1)
 
-#Define the model
+#Define network
 model = Sequential([
     layers.Conv3D(64, (3, 3, 3), activation='relu', input_shape=input_shape),
+    BatchNormalization(),
     layers.MaxPooling3D((2, 2, 2)),
     layers.Dropout(dropout),
+
     layers.Conv3D(128, (3, 3, 3), activation='relu'),
+    BatchNormalization(),
     layers.MaxPooling3D((2, 2, 2)),
     layers.Dropout(dropout),
+
     layers.Conv3D(256, (3, 3, 3), activation='relu'),
+    BatchNormalization(),
     layers.MaxPooling3D((2, 2, 2)),
-    layers.Flatten(),
+
+    layers.GlobalAveragePooling3D(),
     layers.Dense(64, activation='relu'),
+    BatchNormalization(),
     layers.Dense(2, activation='softmax')
 ])
 
