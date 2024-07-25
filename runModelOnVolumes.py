@@ -68,12 +68,12 @@ class mapObject():
             self.preppedarray = np.expand_dims(self.preppedarray, axis=-1)  # Add channel dimension (axis=-1)
             return self.preppedarray
     Folder = 'ValidationData_NotForTraining/SPA'
-def run(Folder, CSVname):
+def run(Folder, CSVname, Model_name):
     FilesList = os.listdir(Folder)
 
     Results = pd.DataFrame(columns=['Map', 'Expected Type', 'Predicted Type', 'Prediction score %'])
 
-    model = convModel('3dconv.tflite')
+    model = convModel(Model_name)
 
     for file in FilesList:
         # Open and pre-process map
@@ -99,15 +99,17 @@ def run(Folder, CSVname):
 
     Results.to_csv('{}.csv'.format(CSVname))
 
-def run_task(data_folder, model_name):
-    run(data_folder, model_name)
+def run_task(data_folder, csv_name, Model_name):
+    run(data_folder, csv_name, Model_name='3DConv_epoch100_trainingrate1e-5_dropout02.tflite')
+
+file_name_descriptor = '_model_3d_1e-5_dropout2'
 
 tasks = [
-    ('ValidationData_NotForTraining/Tomograms', 'Tomograms_Model_3D_1e-5_dropout04'),
-    ('ValidationData_NotForTraining/STA', 'STA_Model_3D_1e-5_dropout04'),
-    ('ValidationData_NotForTraining/SPA', 'SPA_Model_3D_1e-5_dropout04'),
-    ('ValidationData_NotForTraining/Ipets', 'Ipets_Model_3D_1e-5_dropout04'),
-    ('ValidationData_NotForTraining/Helical', 'Helical_Model_3D_1e-5_dropout04')
+    ('ValidationData_NotForTraining/Tomograms', 'Tomograms{}'.format(file_name_descriptor)),
+    ('ValidationData_NotForTraining/STA', 'STA{}'.format(file_name_descriptor)),
+    ('ValidationData_NotForTraining/SPA', 'SPA{}'.format(file_name_descriptor)),
+    ('ValidationData_NotForTraining/Ipets', 'Ipets{}'.format(file_name_descriptor)),
+    ('ValidationData_NotForTraining/Helical', 'Helical{}'.format(file_name_descriptor))
 ]
 
 # Create and start threads for each task
