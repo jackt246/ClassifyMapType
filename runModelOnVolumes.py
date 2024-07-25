@@ -100,16 +100,17 @@ def run(Folder, CSVname, Model_name):
     Results.to_csv('{}.csv'.format(CSVname))
 
 def run_task(data_folder, csv_name, Model_name):
-    run(data_folder, csv_name, Model_name='3DConv_epoch100_trainingrate1e-5_dropout02.tflite')
+    run(data_folder, csv_name, Model_name)
 
 file_name_descriptor = '_model_3d_1e-5_dropout2'
+Model_name='3DConv_epoch100_trainingrate1e-5_dropout02.tflite'
 
 tasks = [
-    ('ValidationData_NotForTraining/Tomograms', 'Tomograms{}'.format(file_name_descriptor)),
-    ('ValidationData_NotForTraining/STA', 'STA{}'.format(file_name_descriptor)),
-    ('ValidationData_NotForTraining/SPA', 'SPA{}'.format(file_name_descriptor)),
-    ('ValidationData_NotForTraining/Ipets', 'Ipets{}'.format(file_name_descriptor)),
-    ('ValidationData_NotForTraining/Helical', 'Helical{}'.format(file_name_descriptor))
+    ('ValidationData_NotForTraining/Tomograms', 'Tomograms{}'.format(file_name_descriptor), Model_name),
+    ('ValidationData_NotForTraining/STA', 'STA{}'.format(file_name_descriptor), Model_name),
+    ('ValidationData_NotForTraining/SPA', 'SPA{}'.format(file_name_descriptor),Model_name),
+    ('ValidationData_NotForTraining/Ipets', 'Ipets{}'.format(file_name_descriptor), Model_name),
+    ('ValidationData_NotForTraining/Helical', 'Helical{}'.format(file_name_descriptor),Model_name)
 ]
 
 # Create and start threads for each task
