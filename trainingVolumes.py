@@ -37,7 +37,7 @@ val_dir = 'Classes3D/Validation/'
 
 batch_size = 1
 epochs = 150
-trainingRate = 1e-5
+trainingRate = 1e-4
 dropout = 0.2
 
 name = '3DConv_epoch{}_trainingrate{}_dropout02_batchnorm'.format(epochs, trainingRate)
