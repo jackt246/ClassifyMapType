@@ -40,7 +40,7 @@ epochs = 150
 trainingRate = 1e-5
 dropout = 0.2
 
-name = '3DConv_epoch100_trainingrate1e-5_dropout02_newlayers'
+name = '3DConv_epoch{}_trainingrate{}_dropout02_batchnorm'.format(epochs, trainingRate)
 # Filname of figure with accuracy and loss info
 
 figtitle = '{}.png'.format(name)
@@ -129,9 +129,8 @@ model = Sequential([
     BatchNormalization(),
     layers.MaxPooling3D((2, 2, 2)),
 
-    layers.GlobalAveragePooling3D(),
+    layers.Flatten(),
     layers.Dense(64, activation='relu'),
-    BatchNormalization(),
     layers.Dense(2, activation='softmax')
 ])
 
