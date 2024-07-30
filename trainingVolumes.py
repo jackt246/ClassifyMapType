@@ -19,6 +19,7 @@ import mrcfile
 from sklearn.metrics import precision_recall_curve, confusion_matrix, classification_report
 import seaborn as sns
 from tensorflow.keras.layers import BatchNormalization
+from tensorflow.keras.optimizers.schedules import PolynomialDecay
 
 
 
@@ -37,10 +38,11 @@ val_dir = 'Classes3D/Validation/'
 
 batch_size = 1
 epochs = 150
-trainingRate = 1e-4
+initial_training_rate = 1e-4
+end_training_rate = 1e-6
 dropout = 0.2
 
-name = '3DConv_epoch{}_trainingrate{}_dropout02_batchnorm'.format(epochs, trainingRate)
+name = '3DConv_epoch{}_trainingrate_s{}_e{}_dropout02_batchnorm_learningrateoptimiser'.format(epochs, initial_training_rate, end_training_rate)
 # Filname of figure with accuracy and loss info
 
 figtitle = '{}.png'.format(name)
@@ -134,8 +136,16 @@ model = Sequential([
     layers.Dense(2, activation='softmax')
 ])
 
+# Define a learning rate scheduler
+lr_schedule = PolynomialDecay(
+    initial_learning_rate=initial_training_rate,
+    decay_steps=1000,
+    end_learning_rate=end_training_rate,
+    power=1.0
+)
+
 model.compile(loss='sparse_categorical_crossentropy',
-              optimizer=tf.keras.optimizers.Adam(learning_rate=trainingRate),
+              optimizer=tf.keras.optimizers.Adam(learning_rate=lr_schedule),
               metrics=['accuracy'], run_eagerly=True)
 
 model.summary()
@@ -153,7 +163,7 @@ history = model.fit(
     steps_per_epoch=steps_per_epoch,
     epochs=epochs,
     validation_data=datasetValidation,
-    validation_steps=validation_steps
+    validation_steps=validation_steps,
 )
 
 # Initialize lists to accumulate predictions and true labels
@@ -178,8 +188,6 @@ y_true_accumulated = np.array(y_true_accumulated)
 print('y_true_accumulated is {} and the shape is {} wth a length of {}'.format(y_true_accumulated,
                                                                                y_true_accumulated.shape, len(y_true_accumulated)))
 y_pred_classes = np.argmax(y_pred_accumulated, axis=1)
-# Convert one-hot encoded labels to single-label integers
-y_true_single_label = np.argmax(y_true_accumulated)
 
 # Calculate precision, recall, etc. using y_true_accumulated and y_pred_accumulated
 # Assuming the second column contains probability for class 1 (tomogram)
