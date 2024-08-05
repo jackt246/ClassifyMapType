@@ -42,7 +42,7 @@ initial_training_rate = 1e-4
 end_training_rate = 1e-6
 dropout = 0.2
 
-name = '3DConv_epoch{}_trainingrate_s{}_e{}_dropout02_batchnorm_learningrateoptimiser'.format(epochs, initial_training_rate, end_training_rate)
+name = '3DConv_epoch{}_trainingrate_s{}_e{}_dropout02_learningrateoptimiser'.format(epochs, initial_training_rate, end_training_rate)
 # Filname of figure with accuracy and loss info
 
 figtitle = '{}.png'.format(name)
@@ -118,17 +118,17 @@ input_shape = (200, 200, 200, 1)
 #Define network
 model = Sequential([
     layers.Conv3D(64, (3, 3, 3), activation='relu', input_shape=input_shape),
-    BatchNormalization(),
+    #BatchNormalization(),
     layers.MaxPooling3D((2, 2, 2)),
     layers.Dropout(dropout),
 
     layers.Conv3D(128, (3, 3, 3), activation='relu'),
-    BatchNormalization(),
+    #BatchNormalization(),
     layers.MaxPooling3D((2, 2, 2)),
     layers.Dropout(dropout),
 
     layers.Conv3D(256, (3, 3, 3), activation='relu'),
-    BatchNormalization(),
+    #BatchNormalization(),
     layers.MaxPooling3D((2, 2, 2)),
 
     layers.Flatten(),
