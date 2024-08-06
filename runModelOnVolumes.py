@@ -102,8 +102,8 @@ def run(Folder, CSVname, Model_name):
 def run_task(data_folder, csv_name, Model_name):
     run(data_folder, csv_name, Model_name)
 
-file_name_descriptor = '_model_3d_1e-5_dropout2'
-Model_name='3DConv_epoch100_trainingrate1e-5_dropout02.tflite'
+file_name_descriptor = '_3DConv_epoch150_trainingrate_s0.0001_e1e-06_dropout02_learningrateoptimiser'
+Model_name='3DConv_epoch150_trainingrate_s0.0001_e1e-06_dropout02_learningrateoptimiser.tflite'
 
 tasks = [
     ('ValidationData_NotForTraining/Tomograms', 'Tomograms{}'.format(file_name_descriptor), Model_name),
